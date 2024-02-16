@@ -17,18 +17,7 @@ int UC_Intake(){
 int UC_Slapper(){
   bool setup_io = false;
   while(1){
-    // if (Controller1.ButtonR2.pressing()){
-    //   cataMotor.spin(forward,67,percent);
-    //   cataMotor1.spin(forward,67,percent);
-    // }
-    // else{
-    //   cataMotor.stop(coast);
-    //   cataMotor1.stop(coast);
-    // }
-    if(Controller1.ButtonR2.pressing()){
-      setup_io = !setup_io;
-    }
-    if(setup_io==true){
+    if (Controller1.ButtonR2.pressing()){
       cataMotor.spin(forward,67,percent);
       cataMotor1.spin(forward,67,percent);
     }
@@ -36,6 +25,19 @@ int UC_Slapper(){
       cataMotor.stop(coast);
       cataMotor1.stop(coast);
     }
+    // if(Controller1.ButtonR2.pressing()){
+    //   setup_io = !setup_io;
+    // }
+    // if(setup_io==true){
+    //   cataMotor.spin(forward,67,percent);
+    //   cataMotor1.spin(forward,67,percent);
+    // }
+    // else{
+    //   cataMotor.stop(coast);
+    //   cataMotor1.stop(coast);
+    // }
+
+    
     // else if(setup_io==false){
     //   cataMotor.stop(coast);
     //   cataMotor1.stop(coast);
@@ -106,6 +108,9 @@ int UC_stick(){
   }  
 }
 
-int UC_setup(){
-  return 0;
+int UC_destroy(){
+  while(1){
+    Controller1.rumble("..... ..... ..... ..... ..... ");
+  }
+//   return 0;
 }

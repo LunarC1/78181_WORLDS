@@ -5,4 +5,4 @@ int UC_frontwings();
 int UC_backwings();
 int UC_distance();
 int UC_stick();
-int UC_setup();
+int UC_destroy();

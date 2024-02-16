@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "usercontrol.hpp"
+#include "image.h"
 #include "autofunctions.hpp"
 
 using namespace vex;
@@ -101,35 +102,116 @@ int autonState = 0;
 // int current_auton_selection = 0;
 // bool auto_started = false;
 
+int brainimg(){
+  while(1){
+    Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    wait(20,msec);
+  }
+}
+
+int current_auton_selection = 0;
+bool auto_started = false;
+
 void pre_auton(void) {
-  // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   default_constants();
   Inertial1.calibrate();
   intakeMotor.setStopping(hold);
   bool limitval = false;
   Brain.Screen.clearScreen();
-
   while(1){
+    // while(auto_started == false){            //Changing the names below will only change their names on the
+    //   // Brain.Screen.clearScreen();            //brain screen for auton selection.
+    //   switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
+    //     case 0:
+    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    //       Brain.Screen.printAt(200, 220, "Skills");
+    //       break;
+    //     case 1:
+    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    //       Brain.Screen.drawCircle(240, 15, 13); 
+    //       Brain.Screen.drawCircle(455, 15, 13); 
+    //       Brain.Screen.printAt(200, 220, "AWP");
+    //       break;
+    //     case 2:
+    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    //       Brain.Screen.drawCircle(320, 120, 13);
+    //       Brain.Screen.drawCircle(258, 120, 13); 
+    //       Brain.Screen.drawCircle(240, 15, 13); 
+    //       Brain.Screen.drawCircle(455, 15, 13); 
+    //       Brain.Screen.printAt(200, 220, "Steal AWP");
+    //       break;
+    //     case 3:
+    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    //       Brain.Screen.drawCircle(160, 120, 13); 
+    //       Brain.Screen.drawCircle(222, 120, 13); 
+    //       Brain.Screen.drawCircle(240, 15, 13); 
+    //       Brain.Screen.drawCircle(222, 80, 13); 
+    //       Brain.Screen.drawCircle(25, 15, 13); 
+    //       Brain.Screen.printAt(200, 220, "Safe sixball");
+    //       break;
+    //     case 4:
+    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+    //       // Brain.Screen.drawRectangle(120, 20, 45, 55); 
+    //       Brain.Screen.drawCircle(160, 120, 13); 
+    //       Brain.Screen.drawCircle(222, 120, 13); 
+    //       Brain.Screen.drawCircle(222, 80, 13); 
+    //       Brain.Screen.drawCircle(25, 15, 13); 
+    //       Brain.Screen.printAt(200, 220, "Fiveball");
+    //       break;
+    //   }
+    //   if(Brain.Screen.pressing()){
+    //     while(Brain.Screen.pressing()) {}
+    //     current_auton_selection ++;
+    //   } else if (current_auton_selection == 8){
+    //     current_auton_selection = 0;
+    //   }
+    //   task::sleep(10);
+    // }
+//   }
+// }
     switch(autonState){
       case 0: 
-        Brain.Screen.printAt(50, 50, "default");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          Brain.Screen.printAt(200, 220, "Skills");
+          break;
+          
       case 1: 
-        Brain.Screen.printAt(50, 50, "AWP");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          Brain.Screen.drawCircle(240, 15, 13); 
+          Brain.Screen.drawCircle(455, 15, 13); 
+          Brain.Screen.printAt(200, 220, "AWP");
+          break;
       case 2: 
-        Brain.Screen.printAt(50, 50, "Sixball");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          Brain.Screen.drawCircle(320, 120, 13); 
+          Brain.Screen.drawCircle(258, 120, 13); 
+          Brain.Screen.drawCircle(240, 15, 13); 
+          Brain.Screen.drawCircle(455, 15, 13); 
+          Brain.Screen.printAt(200, 220, "Steal AWP");
+          break;
       case 3: 
-        Brain.Screen.printAt(50, 50, "Rush + AWP");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          Brain.Screen.drawCircle(160, 120, 13); 
+          Brain.Screen.drawCircle(222, 120, 13); 
+          Brain.Screen.drawCircle(240, 15, 13); 
+          Brain.Screen.drawCircle(222, 80, 13); 
+          Brain.Screen.drawCircle(25, 15, 13); 
+          Brain.Screen.printAt(200, 220, "Safe sixball");
+          break;
       case 4: 
-        Brain.Screen.printAt(50, 50, "Skills");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          // Brain.Screen.drawRectangle(120, 20, 45, 55); 
+          Brain.Screen.drawCircle(160, 120, 13); 
+          Brain.Screen.drawCircle(222, 120, 13); 
+          Brain.Screen.drawCircle(222, 80, 13); 
+          Brain.Screen.drawCircle(25, 15, 13); 
+          Brain.Screen.printAt(200, 220, "Fiveball");
+          break;
       case 5: 
-        Brain.Screen.printAt(50, 50, "Skills");
-        break;
+          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
+          Brain.Screen.printAt(200, 220, "Testing");
+          break;
     }
     if(limitselect.pressing()){
       while(limitselect.pressing()) {}
@@ -142,28 +224,58 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  switch(autonState){
-    case 0: 
-      // skills3(); 
-      AWP();
-      // sixball();
-      break;
-    case 1: 
-      AWP();  
-      break;
-    case 2: 
-      sixball(); 
-      break;
-    case 3: 
-      RushAWP(); 
-      break;
-    case 4: 
-      skills3();
-      break;
-    case 5:
-      sixball_safe();
-      break;
+  // chassis.set_heading(90);
+  // intakeMotor.spin(reverse,30,percent);
+  // chassis.diff(-51, -100, 1400, 300);
+  // chassis.set_heading(180);
+  // chassis.right_swing_to_angle(63);
+  // back_wings.set(true);
+  // chassis.drive_distance(-2.5);
+  // intakeMotor.stop(hold);
+
+
+  // skills3();
+
+  auto_started = true;
+    switch(current_auton_selection){  
+      case 0:
+        skills3(); //This is the default auton, if you don't select from the brain.
+        break;        //Change these to be your own auton functions in order to use the auton selector.
+      case 1:         //Tap the screen to cycle through autons.
+        AWP();
+        break;
+      case 2:
+        RushAWP();
+        break;
+      case 3:
+        sixball_safe();
+        break;
+      case 4:
+        sixball();
+        break;
+      case 5:
+        testing();
   }
+  // switch(autonState){
+  //   case 0: 
+  //     sixball();
+  //     break;
+  //   case 1: 
+  //     AWP();  
+  //     break;
+  //   case 2: 
+  //     RushAWP(); 
+  //     break;
+  //   case 3: 
+  //     sixball_safe(); 
+  //     break;
+  //   case 4: 
+  //     skills3();
+  //     break;
+  //   case 5:
+  //     testing();
+  //     break;
+  // }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -184,20 +296,34 @@ void usercontrol(void) {
   task Extask(UC_backwings);
   task Endgametask(UC_distance);
   task lightsabertask(UC_stick);
-  task setuptask(UC_setup);
+  task destroytask(UC_destroy);
+  // task killtask(UC_destroy);
   Brain.Screen.clearScreen();
   // bool setup_io = false;
   while (1) {
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
-      chassis.set_drive_exit_conditions(0.3, 10, 600);;
-      chassis.set_heading(315);
-      intakeMotor.spin(reverse,60,percent);
-      chassis.drive_distance(17);
-      chassis.turn_to_angle(62);
-      chassis.drive_distance(-2);
-      back_wings.set(true);
+      chassis.set_drive_exit_conditions(0.3, 10, 600);
+      chassis.set_swing_exit_conditions(1.2, 10, 1300);
+      chassis.set_heading(90);
+      intakeMotor.spin(reverse,30,percent);
+      chassis.diff(-51, -100, 1400, 300);
+      // chassis.set_heading(180);
+      chassis.right_swing_to_angle(75);
+      // back_wings.set(true);
+      chassis.drive_distance(-7);
       intakeMotor.stop(hold);
+
+      // chassis.set_drive_exit_conditions(0.3, 10, 600);;
+      // chassis.set_heading(315);
+      // intakeMotor.spin(reverse,60,percent);
+      // chassis.drive_distance(17);
+      // chassis.turn_to_angle(62);
+      // chassis.drive_distance(-2);
+      // back_wings.set(true);
+      // intakeMotor.stop(hold);
+
+      
       // cataMotor.spin(forward,67,percent);
       // cataMotor1.spin(forward,67,percent);
       // // wait(3,sec);
