@@ -17,6 +17,7 @@ void odom_test();
 void skills1();
 void skills2();
 void skills3();
+void skills4();
 void testing();
 
 void tank_odom_test();

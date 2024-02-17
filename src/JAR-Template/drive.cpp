@@ -284,8 +284,8 @@ void Drive::diff(double veloleft, double veloright, double timeout = 4000, doubl
   wait(wingtimeout,msec);
   back_wings.set(false);
   wait(timeout-wingtimeout,msec);
-  chassis.DriveL.stop(coast);
-  chassis.DriveR.stop(coast);
+  chassis.DriveL.spin(fwd,0,volt);
+  chassis.DriveR.spin(fwd,0,volt);
 }
 
 void Drive::cross(double timeout = 5000){

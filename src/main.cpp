@@ -1,6 +1,8 @@
 #include "vex.h"
 #include "usercontrol.hpp"
 #include "image.h"
+#include "jason.h"
+// #include "samson.h"
 #include "autofunctions.hpp"
 
 using namespace vex;
@@ -55,7 +57,7 @@ PORT1,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-360,
+367,
 
 /*---------------------------------------------------------------------------*/
 /*                                  PAUSE!                                   */
@@ -115,7 +117,7 @@ bool auto_started = false;
 void pre_auton(void) {
   vexcodeInit();
   default_constants();
-  Inertial1.calibrate();
+  // Inertial1.calibrate();
   intakeMotor.setStopping(hold);
   bool limitval = false;
   Brain.Screen.clearScreen();
@@ -172,10 +174,11 @@ void pre_auton(void) {
 // }
     switch(autonState){
       case 0: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          Brain.Screen.printAt(200, 220, "Skills");
+          Brain.Screen.drawImageFromBuffer(jason, 0, 0, sizeof(jason));
+          // Brain.Screen.drawImageFromBuffer(jason, 244, 0, sizeof(samson));
+          // Brain.Screen.drawImageFromBuffer(jason, 425, 0, sizeof(ni));
+          Brain.Screen.printAt(200, 220, "Skills1");
           break;
-          
       case 1: 
           Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
           Brain.Screen.drawCircle(240, 15, 13); 
@@ -194,7 +197,7 @@ void pre_auton(void) {
           Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
           Brain.Screen.drawCircle(160, 120, 13); 
           Brain.Screen.drawCircle(222, 120, 13); 
-          Brain.Screen.drawCircle(240, 15, 13); 
+          Brain.Screen.drawCircle(240, 15, 13);  
           Brain.Screen.drawCircle(222, 80, 13); 
           Brain.Screen.drawCircle(25, 15, 13); 
           Brain.Screen.printAt(200, 220, "Safe sixball");
@@ -245,7 +248,7 @@ void autonomous(void) {
         AWP();
         break;
       case 2:
-        RushAWP();
+        skills4();
         break;
       case 3:
         sixball_safe();
@@ -293,10 +296,10 @@ void usercontrol(void) {
   task Launchtask(UC_Slapper);
   task Extendtask(UC_Hang);
   task Releasetask(UC_frontwings);
-  task Extask(UC_backwings);
-  task Endgametask(UC_distance);
+  task Extask(UC_backwings); 
+  // task Endgametask(UC_distance);
   task lightsabertask(UC_stick);
-  task destroytask(UC_destroy);
+  // task destroytask(UC_destroy);
   // task killtask(UC_destroy);
   Brain.Screen.clearScreen();
   // bool setup_io = false;
@@ -309,7 +312,7 @@ void usercontrol(void) {
       intakeMotor.spin(reverse,30,percent);
       chassis.diff(-51, -100, 1400, 300);
       // chassis.set_heading(180);
-      chassis.right_swing_to_angle(75);
+      chassis.right_swing_to_angle(74.3);
       // back_wings.set(true);
       chassis.drive_distance(-7);
       intakeMotor.stop(hold);
