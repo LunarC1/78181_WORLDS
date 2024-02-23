@@ -8,6 +8,8 @@
 using namespace vex;
 competition Competition;
 
+
+
 /*---------------------------------------------------------------------------*/
 /*                             VEXcode Config                                */
 /*                                                                           */
@@ -57,7 +59,7 @@ PORT1,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-367,
+353.5,
 
 /*---------------------------------------------------------------------------*/
 /*                                  PAUSE!                                   */
@@ -122,6 +124,11 @@ void pre_auton(void) {
   bool limitval = false;
   Brain.Screen.clearScreen();
   while(1){
+    if(Brain.Battery.capacity() > 50 && Brain.Battery.capacity() < 100){
+      wait(10,msec);
+    }
+    printf("Battery: %d \n",Brain.Battery.capacity());
+
     // while(auto_started == false){            //Changing the names below will only change their names on the
     //   // Brain.Screen.clearScreen();            //brain screen for auton selection.
     //   switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
@@ -242,7 +249,8 @@ void autonomous(void) {
   auto_started = true;
     switch(current_auton_selection){  
       case 0:
-        skills3(); //This is the default auton, if you don't select from the brain.
+        testing();
+        // skills3(); //This is the default auton, if you don't select from the brain.
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
         AWP();
@@ -304,6 +312,8 @@ void usercontrol(void) {
   Brain.Screen.clearScreen();
   // bool setup_io = false;
   while (1) {
+
+
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
       chassis.set_drive_exit_conditions(0.3, 10, 600);
@@ -312,10 +322,18 @@ void usercontrol(void) {
       intakeMotor.spin(reverse,30,percent);
       chassis.diff(-51, -100, 1400, 300);
       // chassis.set_heading(180);
-      chassis.right_swing_to_angle(74.3);
+      chassis.right_swing_to_angle(70.7);
       // back_wings.set(true);
       chassis.drive_distance(-7);
       intakeMotor.stop(hold);
+
+      // cataMotor.spin(forward,68,percent);
+      // cataMotor1.spin(forward,68,percent);
+
+      // // wait(3,sec);
+      // wait(20.7,sec);
+      // cataMotor.stop(brake);
+      // cataMotor1.stop(brake);
 
       // chassis.set_drive_exit_conditions(0.3, 10, 600);;
       // chassis.set_heading(315);

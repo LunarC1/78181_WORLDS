@@ -3,9 +3,9 @@
 
 void default_constants(){
   chassis.set_drive_constants(10, 0.53, 0, 1.23, 0);
-  chassis.set_turn_constants(12, .32, .01, 1.9, 15);
+  chassis.set_turn_constants(12, .325, .01, 1.45, 15);
   // chassis.set_turn_constants(12, .4, .03, 3, 15);
-  chassis.set_swing_constants(12, .137, 0.001, 0.01, 0);
+  chassis.set_swing_constants(12, .14, 0.001, 0.013, 0);
   chassis.set_diff_constants(12, .137, 0.001, 0.01, 0);
   // chassis.set_swing_constants(12, .1285, 0.001, 0.3, 15);
   // chassis.set_swing_constants(12, .3, .001, 2, 15);
@@ -190,14 +190,14 @@ void skills3(){
   intakeMotor.spin(reverse,30,percent);
   chassis.diff(-51, -100, 1400, 300);
   // chassis.set_heading(180);
-  chassis.right_swing_to_angle(74.3);
+  chassis.right_swing_to_angle(70.6);
   // back_wings.set(true);
   chassis.drive_distance(-7);
   intakeMotor.stop(hold);
   cataMotor.spin(forward,68,percent);
   cataMotor1.spin(forward,68,percent);
   // wait(3,sec);
-  wait(21.3,sec);
+  wait(20.2,sec);
   cataMotor.stop(brake);
   cataMotor1.stop(brake);
 
@@ -216,7 +216,7 @@ void skills3(){
   chassis.set_drive_exit_conditions(0.3, 10, 600);
   chassis.turn_to_angle(270);
   back_wings.set(true);
-  chassis.diff(-90, -45.9, 1500, 330);
+  chassis.diff(-90, -45.9, 1500, 500);
   // wait(1400,msec);
   chassis.turn_to_angle(180);
   chassis.drive_distance(13);
@@ -249,13 +249,15 @@ void skills3(){
   // chassis.drive_distance(39);
 
   chassis.turn_to_angle(270);
-  chassis.drive_distance(14);
+  chassis.drive_distance(17.5);
+  chassis.drive_distance(-3.5);
+
   chassis.left_swing_to_angle(79);
   intakeMotor.spin(reverse,100,pct);
   front_wings.set(true);
   chassis.DriveL.spin(fwd, 7.5, volt);
   chassis.DriveR.spin(fwd, 7.5, volt);
-  wait(950,msec);
+  wait(1050,msec);
   front_wings.set(false);
   chassis.turn_to_angle(45);
   chassis.set_drive_exit_conditions(1, 3, 1150);
@@ -263,57 +265,61 @@ void skills3(){
 
   chassis.turn_to_angle(0);
   
+  intakeMotor.spin(fwd,100,pct);
 
 
-  chassis.drive_distance(28);
-  chassis.turn_to_angle(90);
+  // chassis.drive_distance(28);
+  // chassis.turn_to_angle(90);
 
-  intakeMotor.spin(reverse,100,pct);
-  front_wings.set(true);
-  chassis.DriveL.spin(fwd, 7.3, volt);
-  chassis.DriveR.spin(fwd, 7.3, volt);
-  wait(1050,msec);
-  front_wings.set(false);
-  chassis.drive_distance(-33);
-  chassis.turn_to_angle(0);
+  // intakeMotor.spin(reverse,100,pct);
+  // front_wings.set(true);
+  // chassis.DriveL.spin(fwd, 7.3, volt);
+  // chassis.DriveR.spin(fwd, 7.3, volt);
+  // wait(1050,msec);
+  // front_wings.set(false);
+  // chassis.drive_distance(-33);
+  // chassis.turn_to_angle(0);
 
-  chassis.drive_distance(29);
+  // chassis.drive_distance(29);
+  chassis.drive_distance(60);
 
 
   // chassis.drive_distance(60);
   chassis.turn_to_angle(140);
+  intakeMotor.spin(fwd,-100,pct);
   front_wings.set(true);
   chassis.set_drive_exit_conditions(2, 3, 1150);
   chassis.drive_distance(19);
   chassis.set_drive_exit_conditions(1, 3, 1150);
-  chassis.set_swing_exit_conditions(2, 10, 1300);
+  chassis.set_swing_exit_conditions(2.2, 10, 1200);
 
   chassis.right_swing_to_angle(90);
 
-  chassis.DriveL.spin(fwd, 7.5, volt);
-  chassis.DriveR.spin(fwd, 7.5, volt);
+  chassis.DriveL.spin(fwd, 7, volt);
+  chassis.DriveR.spin(fwd, 7, volt);
 
-  wait(1200,msec);
+  wait(1300,msec);
   front_wings.set(false);
   chassis.turn_to_angle(90);
   chassis.drive_distance(-24);
   front_wings.set(true);
-  chassis.DriveL.spin(fwd, 11, volt);
-  chassis.DriveR.spin(fwd, 11, volt);
-  wait(800,msec);
+  chassis.DriveL.spin(fwd, 7.9, volt);
+  chassis.DriveR.spin(fwd, 7.9, volt);
+  wait(1100,msec);
   front_wings.set(false);
   
   chassis.turn_to_angle(90);
   chassis.drive_distance(-28);
   chassis.turn_to_angle(205);
-  chassis.drive_distance(-39);
+  chassis.drive_distance(-37);
+  back_wings.set(true);
   chassis.diff(-22,-90 ,1850, 300);
   chassis.turn_to_angle(0);
-  chassis.drive_distance(12);
-  chassis.DriveL.spin(fwd, -11, volt);
-  chassis.DriveR.spin(fwd, -11, volt);
-  wait(700,msec);
-  chassis.set_heading(0);
+  // chassis.drive_distance(12);
+  // chassis.DriveL.spin(fwd, -11, volt);
+  // chassis.DriveR.spin(fwd, -11, volt);
+  // wait(700,msec);
+  // chassis.set_heading(0);
   chassis.diff(51,100,920,0);
   hangpiston.set(true);
   chassis.turn_to_angle(270);
@@ -526,10 +532,26 @@ void skills4(){
 }
 
 void testing(){
-  chassis.set_heading(270);
-  chassis.diff_to_angle(180,100,20);
+  chassis.set_heading(0);
+
+  // chassis.turn_to_angle(90);
+  // chassis.turn_to_angle(180);
+  // chassis.turn_to_angle(270);
+  // chassis.turn_to_angle(0);
+
+  chassis.right_swing_to_angle(90);
+  // chassis.right_swing_to_angle(180);
+  // chassis.right_swing_to_angle(270);
+  chassis.right_swing_to_angle(0);
 }
 
+void testing1(){
+  chassis.set_heading(90);
+  chassis.turn_to_angle_chain(0);
+  chassis.drive_distance(24);
+  chassis.turn_to_angle(90);
+  chassis.turn_to_angle(0);
+}
 
 
 

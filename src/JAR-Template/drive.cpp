@@ -140,6 +140,57 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
   DriveR.stop(hold);
 }
 
+void Drive::turn_to_angle_chain(float angle){
+  turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
+}
+
+void Drive::turn_to_angle_chain(float angle, float turn_max_voltage){
+  turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
+}
+
+void Drive::turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout){
+  turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
+}
+
+void Drive::turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti){
+  desired_heading = angle;
+  PID turnPID(reduce_negative_180_to_180(angle - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, turn_settle_error, turn_settle_time, turn_timeout);
+  while(turnPID.is_settled() == false){
+    float error = reduce_negative_180_to_180(angle - get_absolute_heading());
+    float output = turnPID.compute(error);
+    output = clamp(output, -turn_max_voltage, turn_max_voltage);
+    drive_with_voltage(output, -output);
+    task::sleep(10);
+  }
+  DriveL.spin(fwd,0,percent);
+  DriveR.spin(fwd,0,percent);
+}
+
+void Drive::turn_to_angle_custom(float angle, bool direction){
+  turn_to_angle_custom(angle, direction, turn_max_voltage, turn_timeout);
+}
+
+void Drive::turn_to_angle_custom(float angle, bool direction, float turn_max_voltage, float turn_timeout){
+  float error = std::abs(angle - Inertial1.heading());
+  while(std::abs(error) > 1.8){
+    if(direction == true){
+      DriveL.spin(fwd,turn_max_voltage,percent);
+      DriveR.spin(fwd,-(turn_max_voltage),percent);
+    }
+    else if(direction == false){
+      DriveL.spin(fwd,-(turn_max_voltage),percent);
+      DriveR.spin(fwd,turn_max_voltage,percent);
+    }
+    else{
+      DriveL.stop(hold);
+      DriveR.stop(hold);
+    }
+    wait(10,msec);
+  }
+  DriveL.spin(fwd,0,percent);
+  DriveR.spin(fwd,0,percent);
+}
+
 void Drive::drive_distance(float distance){
   drive_distance(distance, desired_heading, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
 }
@@ -215,8 +266,8 @@ void Drive::drive_distance_chain(float distance, float distexit, float heading, 
     drive_with_voltage(drive_output+heading_output, drive_output-heading_output);
     task::sleep(10);
   }
-  DriveL.stop(hold);
-  DriveR.stop(hold);
+  DriveL.spin(fwd,0,percent);
+  DriveR.spin(fwd,0,percent);
 }
 
 void Drive::left_swing_to_angle(float angle){
@@ -240,9 +291,11 @@ void Drive::left_swing_to_angle(float angle, float swing_max_voltage, float swin
 
 void Drive::right_swing_to_angle(float angle){
   right_swing_to_angle(angle, swing_max_voltage, swing_settle_error, swing_settle_time, swing_timeout, swing_kp, swing_ki, swing_kd, swing_starti);
+  // printf("right_swing_to_angle");
 }
 
 void Drive::right_swing_to_angle(float angle, float swing_max_voltage, float swing_settle_error, float swing_settle_time, float swing_timeout, float swing_kp, float swing_ki, float swing_kd, float swing_starti){
+  // printf("[start] Right_swing_to_angle");
   desired_heading = angle;
   PID swingPID(reduce_negative_180_to_180(angle - get_absolute_heading()), swing_kp, swing_ki, swing_kd, swing_starti, swing_settle_error, swing_settle_time, swing_timeout);
   while(swingPID.is_settled() == false){
@@ -253,6 +306,7 @@ void Drive::right_swing_to_angle(float angle, float swing_max_voltage, float swi
     DriveL.stop(hold);
     task::sleep(10);
   }
+    // printf("[end] Right_swing_to_angle");
   DriveL.stop(hold);
   DriveR.stop(hold);
 }
