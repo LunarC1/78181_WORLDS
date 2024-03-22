@@ -135,6 +135,9 @@ public:
   void diff_to_angle(float angle, float left_max_volt, float right_max_volt, float diff_settle_error, float diff_settle_time, float diff_timeout, float diff_kp, float diff_ki, float diff_kd, float diff_starti);
   
   void diff(double veloleft, double veloright, double timeout, double wingtimeout);
+
+  void moveToPose(float x, float y, float theta, double dleadint, int timeout, bool direction);
+
   void cross(double timeout);
   void ram(double timeout, double leftvolt, double rightvolt);
   void pre_outtake(float desired_angle, float errorval);

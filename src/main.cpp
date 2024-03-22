@@ -4,7 +4,7 @@
 #include "jason.h"
 // #include "samson.h"
 #include "autofunctions.hpp"
-
+#include <cmath>
 using namespace vex;
 competition Competition;
 
@@ -34,8 +34,8 @@ Drive chassis(
 //Specify your drive setup below. There are seven options:
 //ZERO_TRACKER_NO_ODOM, ZERO_TRACKER_ODOM, TANK_ONE_ENCODER, TANK_ONE_ROTATION, TANK_TWO_ENCODER, TANK_TWO_ROTATION, HOLONOMIC_TWO_ENCODER, and HOLONOMIC_TWO_ROTATION
 //For example, if you are not using odometry, put ZERO_TRACKER_NO_ODOM below:
-ZERO_TRACKER_ODOM,
-// ZERO_TRACKER_NO_ODOM,
+// ZERO_TRACKER_ODOM,
+ZERO_TRACKER_NO_ODOM,
 
 //Add the names of your Drive motors into the motor groups below, separated by commas, i.e. motor_group(Motor1,Motor2,Motor3).
 //You will input whatever motor names you chose when you configured your robot using the sidebar configurer, they don't have to be "Motor1" and "Motor2".
@@ -47,15 +47,15 @@ motor_group(LF,LM,LB),
 motor_group(RF,RM,RB),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT1,
+PORT11,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
-4,
+3.25,
 
 //External ratio, must be in decimal, in the format of input teeth/output teeth.
 //If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
 //If the motor drives the wheel directly, this value is 1:
-0.57,
+0.75,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
@@ -113,21 +113,100 @@ int brainimg(){
   }
 }
 
+int horvert(){
+  double hangpos;
+  bool ver_is_pressed = false;
+  bool hor_is_pressed = false;
+  bool ratchet = false;
+  hangrot.resetPosition(); 
+  while(1){
+    hangpos = std::abs(hangrot.position(rotationUnits::rev));
+    Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
+    if(Controller1.ButtonA.pressing() && hor_is_pressed == false){ //Click once, set ratchet to false, lift up
+      pistonratchet.set(false);
+      ratchet = false;
+      while(hangpos <= 1.15){
+        hangpos = std::abs(hangrot.position(rotationUnits::rev));
+        cataMotor.spin(forward,-100,pct);
+        Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
+        wait(20,msec);
+      }
+      cataMotor.stop(hold);
+      hor_is_pressed = true;
+    }
+    else if(Controller1.ButtonA.pressing() && hor_is_pressed == true){ //Click another time, set ratchet to true, lift down
+      pistonratchet.set(true);
+      ratchet = true;
+      while(hangpos >= 0.4){
+        hangpos = std::abs(hangrot.position(rotationUnits::rev));
+        cataMotor.spin(forward,100,pct);
+        wait(20,msec);
+      }
+      cataMotor.stop(hold);
+    }
+
+    if(Controller1.ButtonB.pressing() && ver_is_pressed == false){ //Click once, set ratchet to false, lift up
+      pistonratchet.set(false);
+      ratchet = false;
+      while(hangpos <= 2.6){
+        cataMotor.spin(forward,-100,pct);
+        hangpos = std::abs(hangrot.position(rotationUnits::rev));
+        wait(20,msec);
+      }
+      cataMotor.stop(hold);
+      ver_is_pressed = true;
+    }
+    else if(Controller1.ButtonB.pressing() && ver_is_pressed == true){ //Click another time, set ratchet to true, lift down
+      ratchet = true;
+      pistonratchet.set(true);
+      while(hangpos >= 0.4){
+        cataMotor.spin(forward,100,pct);
+        hangpos = std::abs(hangrot.position(rotationUnits::rev));
+        wait(20,msec);
+      }
+      cataMotor.stop(hold);
+    }
+
+    if (Controller1.ButtonDown.pressing()){ //Manual Lift function
+      pistonratchet.set(false);
+      // ratchet = false;
+      cataMotor.spin(forward,100,percent);
+    }
+    else if (Controller1.ButtonUp.pressing()){
+      pistonratchet.set(true);
+      // ratchet = true;
+      cataMotor.spin(forward,-100,percent);
+    }
+    else cataMotor.stop(hold);
+
+    if(Controller1.ButtonX.pressing()){ // Piston Ratchet function
+      waitUntil(Controller1.ButtonX.pressing() == false);
+      ratchet =! ratchet;
+    }
+    pistonratchet.set(ratchet);
+  }
+    wait(20,msec);
+}
+
 int current_auton_selection = 0;
 bool auto_started = false;
 
 void pre_auton(void) {
   vexcodeInit();
   default_constants();
-  // Inertial1.calibrate();
+  // Inertial100.calibrate();
+  printf("Battery: %f \n",std::round(Brain.Battery.capacity()));
   intakeMotor.setStopping(hold);
-  bool limitval = false;
+  back_wings.set(false);
+  back_wings2.set(false);
+  hangrot.resetPosition(); 
+  hangrot.setPosition(0, rotationUnits::rev); 
+  // bool limitval = false;
   Brain.Screen.clearScreen();
   while(1){
     if(Brain.Battery.capacity() > 50 && Brain.Battery.capacity() < 100){
       wait(10,msec);
     }
-    printf("Battery: %d \n",Brain.Battery.capacity());
 
     // while(auto_started == false){            //Changing the names below will only change their names on the
     //   // Brain.Screen.clearScreen();            //brain screen for auton selection.
@@ -243,13 +322,14 @@ void autonomous(void) {
   // chassis.drive_distance(-2.5);
   // intakeMotor.stop(hold);
 
-
+  
   // skills3();
 
   auto_started = true;
     switch(current_auton_selection){  
       case 0:
-        testing();
+      testing();
+        // PID_Test();
         // skills3(); //This is the default auton, if you don't select from the brain.
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
@@ -304,23 +384,51 @@ void usercontrol(void) {
   task Launchtask(UC_Slapper);
   task Extendtask(UC_Hang);
   task Releasetask(UC_frontwings);
-  task Extask(UC_backwings); 
+  task Extask(UC_backwings);
+  // task horizontaltask(UC_horizontalhang);
+  // task verticaltask(UC_verticalhang);
+  // task hormac(UC_horhangmac);
+  // task vermac(UC_verhangmac);
+
+  task verhormac(horvert);
+
   // task Endgametask(UC_distance);
-  task lightsabertask(UC_stick);
+  // task pistonratchettask(UC_stick);
   // task destroytask(UC_destroy);
   // task killtask(UC_destroy);
-  Brain.Screen.clearScreen();
-  // bool setup_io = false;
+    // Brain.Screen.clearScreen();
+    // // bool setup_io = false;
+    // placement.setLight(ledState::on);
+    // placement.brightness(100);
+    // while(1){
+    //   if(recoil.objectDistance(mm) < 75){
+    //     cataMotor.stop(brake);
+    //     kicker.stop(brake);
+    //     if(placement.isNearObject()){
+    //       // wait(0.3,sec);
+    //       cataMotor.spin(forward,100,pct);
+    //       kicker.spin(forward,100,pct); 
+    //       wait(0.13,sec);
+    //       cataMotor.stop(coast);
+    //       kicker.stop(coast);
+    //     }
+    //   }    
+    //   else{
+    //     cataMotor.spin(forward,100,pct);
+    //     kicker.spin(forward,100,pct);
+    //   }
+    //   wait(10,msec);
+    // }
   while (1) {
-
-
+    // Brain.Screen.printAt(200, 120, "Position:%f",hangrot.position(rotationUnits::rev));
+    // printf("Position:%f",hangrot.position(rotationUnits::rev));
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
       chassis.set_drive_exit_conditions(0.3, 10, 600);
       chassis.set_swing_exit_conditions(1.2, 10, 1300);
       chassis.set_heading(90);
       intakeMotor.spin(reverse,30,percent);
-      chassis.diff(-51, -100, 1400, 300);
+      chassis.diff(-40, -80, 1400, 300);
       // chassis.set_heading(180);
       chassis.right_swing_to_angle(70.7);
       // back_wings.set(true);
@@ -328,12 +436,12 @@ void usercontrol(void) {
       intakeMotor.stop(hold);
 
       // cataMotor.spin(forward,68,percent);
-      // cataMotor1.spin(forward,68,percent);
+      // kicker.spin(forward,68,percent);
 
       // // wait(3,sec);
       // wait(20.7,sec);
       // cataMotor.stop(brake);
-      // cataMotor1.stop(brake);
+      // kicker.stop(brake);
 
       // chassis.set_drive_exit_conditions(0.3, 10, 600);;
       // chassis.set_heading(315);
@@ -346,11 +454,11 @@ void usercontrol(void) {
 
       
       // cataMotor.spin(forward,67,percent);
-      // cataMotor1.spin(forward,67,percent);
+      // kicker.spin(forward,67,percent);
       // // wait(3,sec);
       // wait(21,sec);
       // cataMotor.stop(brake);
-      // cataMotor1.stop(brake);
+      // kicker.stop(brake);
       // back_wings.set(false);
       
     }
@@ -359,15 +467,15 @@ void usercontrol(void) {
     // }
     // if(setup_io==true){
     //   cataMotor.spin(forward,67,percent);
-    //   cataMotor1.spin(forward,67,percent);
+    //   kicker.spin(forward,67,percent);
     // }
     // else{
     //   cataMotor.stop(coast);
-    //   cataMotor1.stop(coast);
+    //   kicker.stop(coast);
     // }
     // else if(setup_io==false){
     //   cataMotor.stop(coast);
-    //   cataMotor1.stop(coast);
+    //   kicker.stop(coast);
     // }
     wait(20, msec);
   }

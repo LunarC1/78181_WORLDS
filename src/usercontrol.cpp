@@ -1,4 +1,5 @@
 #include "vex.h"
+#include <cmath>
 
 int UC_Intake(){
   while(1){
@@ -17,54 +18,69 @@ int UC_Intake(){
 int UC_Slapper(){
   bool setup_io = false;
   while(1){
-    if (Controller1.ButtonR2.pressing()){
-      cataMotor.spin(forward,67,percent);
-      cataMotor1.spin(forward,67,percent);
+    if (Controller1.ButtonRight.pressing()){
+      kicker.spin(forward,100,percent);
     }
     else{
-      cataMotor.stop(coast);
-      cataMotor1.stop(coast);
+      kicker.stop(coast);
     }
     // if(Controller1.ButtonR2.pressing()){
     //   setup_io = !setup_io;
     // }
     // if(setup_io==true){
     //   cataMotor.spin(forward,67,percent);
-    //   cataMotor1.spin(forward,67,percent);
+    //   kicker.spin(forward,67,percent);
     // }
     // else{
     //   cataMotor.stop(coast);
-    //   cataMotor1.stop(coast);
+    //   kicker.stop(coast);
     // }
 
     
     // else if(setup_io==false){
     //   cataMotor.stop(coast);
-    //   cataMotor1.stop(coast);
+    //   kicker.stop(coast);
     // }
   }
 }
 
+// int UC_pissrat(){
+//   bool pissratc = false; 
+//   while(1){
+//     if(Controller1.ButtonLeft.pressing()){
+//       waitUntil(Controller1.ButtonLeft.pressing() == false);
+//       pissratc =!pissratc;
+//     }
+//     pistonratchet.set(pissratc);
+//     wait(10,msec);
+//   }
+// }
+
 int UC_Hang(){
-  bool hang_io = false; 
   while(1){
-    if(Controller1.ButtonB.pressing()){
-      waitUntil(Controller1.ButtonB.pressing() == false);
-      hang_io =!hang_io;
-    }
-    hangpiston.set(hang_io);
+    // if (Controller1.ButtonDown.pressing()){
+    //   cataMotor.spin(forward,100,percent);
+    // }
+    // else if (Controller1.ButtonUp.pressing()){
+    //   cataMotor.spin(forward,-100,percent);
+    // }
+    // else{
+    //   cataMotor.stop(hold);
+    // }
     wait(20,msec);
-  }  
+  }
 }
 
 int UC_frontwings(){
   while(1){
     if(Controller1.ButtonL2.pressing()){
       front_wings.set(true);
+      front_wings2.set(true);
       // back_wings.set(true);
     }
     else{
       front_wings.set(false);
+      front_wings2.set(false);
       // back_wings.set(false);
     }
   }
@@ -73,12 +89,12 @@ int UC_frontwings(){
 int UC_backwings(){
   bool bwing_io = false; 
   while(1){
-    if(Controller1.ButtonA.pressing()){
-      waitUntil(Controller1.ButtonA.pressing() == false);
+    if(Controller1.ButtonR2.pressing()){
+      waitUntil(Controller1.ButtonR2.pressing() == false);
       bwing_io =!bwing_io;
     }
-    // front_wings.set(bwing_io);
     back_wings.set(bwing_io);
+    back_wings2.set(bwing_io);
     wait(20,msec);
   }  
 }
@@ -96,17 +112,17 @@ int UC_distance(){
   }
 }
 
-int UC_stick(){
-  bool stick_io = false; 
-  while(1){
-    if(Controller1.ButtonX.pressing()){
-      waitUntil(Controller1.ButtonX.pressing() == false);
-      stick_io =!stick_io;
-    }
-    lightsaber.set(stick_io);
-    wait(20,msec);
-  }  
-}
+// int UC_stick(){
+//   bool stick_io = false; 
+//   while(1){
+//     if(Controller1.ButtonX.pressing()){
+//       waitUntil(Controller1.ButtonX.pressing() == false);
+//       stick_io =!stick_io;
+//     }
+//     pistonratchet.set(stick_io);
+//     wait(20,msec);
+//   }  
+// }
 
 int UC_destroy(){
   while(1){
@@ -114,3 +130,97 @@ int UC_destroy(){
   }
 //   return 0;
 }
+
+// bool ver_is_pressed = false;
+// bool hor_is_pressed = false;
+// int UC_horizontalhang(){
+//   // hangrot.resetPosition(); 
+//   while(1){
+//     double error = std::abs(hangrot.position(rotationUnits::rev) - 1.15);
+//     // cataMotor.spin(forward,100,pct);
+//     while(error >= 0.2) cataMotor.spin(forward,-100,pct);
+//     cataMotor.stop(hold);
+//     pistonratchet.set(true);
+//     hor_is_pressed = true;
+//     Brain.Screen.printAt(200, 120, "Position:%f",hangrot.position(rotationUnits::rev));
+//     wait(20,msec);
+//   }
+// }
+
+// int UC_verticalhang(){
+//   while(1){
+//     double error = std::abs(hangrot.position(rotationUnits::rev) - 1.15);
+//     // hangrot.resetPosition(); 
+//     // cataMotor.spin(forward,100,pct);
+//     while(error >= 0.2) cataMotor.spin(forward,-100,pct);
+//     cataMotor.stop(hold);
+//     pistonratchet.set(true);
+//     ver_is_pressed = true;
+//   }
+// }
+
+// int UC_horhangmac(){
+//   while(1){
+//     double error = std::abs(hangrot.position(rotationUnits::rev) - 0.4);
+//     if(Controller1.ButtonUp.pressing()) UC_horizontalhang();
+//     else if(Controller1.ButtonUp.pressing() && hor_is_pressed == true){
+//       while(error >= 0.4) cataMotor.spin(forward,100,pct);
+//       pistonratchet.set(true);
+//     }
+//   }
+// }
+
+// int UC_verhangmac(){
+//   while(1){
+//     double error = std::abs(hangrot.position(rotationUnits::rev) - 0.4);
+//     if(Controller1.ButtonDown.pressing()) UC_verticalhang();
+//     else if(Controller1.ButtonDown.pressing() && ver_is_pressed == true){
+//       while(error >= 0.4) cataMotor.spin(forward,100,pct);
+//       pistonratchet.set(true);
+//     }
+//   }
+// }
+
+// int horvert(){
+//   double hangpos;
+//   bool ver_is_pressed = false;
+//   bool hor_is_pressed = false;
+//   while(1){
+//     hangpos = std::abs(hangrot.position(rotationUnits::rev));
+//     Brain.Screen.printAt(200, 120, "Position:%f",hangpos);
+//     if(Controller1.ButtonUp.pressing()){
+//       while(hangpos <= 1.15){
+//         cataMotor.spin(forward,-100,pct);
+//         wait(20,msec);
+//       }
+//       cataMotor.stop(hold);
+//       hor_is_pressed = !hor_is_pressed;
+//     }
+//     else if(Controller1.ButtonUp.pressing() && hor_is_pressed == true){
+//       while(hangpos >= 0.4){
+//         cataMotor.spin(forward,100,pct);
+//         wait(20,msec);
+//       }
+//       pistonratchet.set(true);
+//     }
+//     else cataMotor.stop(hold);
+
+//     if(Controller1.ButtonDown.pressing()){
+//       while(hangpos <= 2.6){
+//         cataMotor.spin(forward,-100,pct);
+//         wait(20,msec);
+//       }
+//       cataMotor.stop(hold);
+//       ver_is_pressed = !ver_is_pressed;
+//     }
+//     else if(Controller1.ButtonDown.pressing() && ver_is_pressed == true){
+//       while(hangpos >= 0.4){
+//         cataMotor.spin(forward,100,pct);
+//         wait(20,msec);
+//       }
+//       pistonratchet.set(true);
+//     }
+//     else cataMotor.stop(hold);
+//     wait(20,msec);
+//   }
+// }

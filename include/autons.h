@@ -7,6 +7,7 @@ extern Drive chassis;
 
 void default_constants();
 
+void PID_Test();
 void AWP();
 void AWP_Elims();
 void AWP_ram();
