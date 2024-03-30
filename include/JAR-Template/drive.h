@@ -106,13 +106,13 @@ public:
   void turn_to_angle(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
   void turn_to_angle(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
 
-  void turn_to_angle_chain(float angle);
-  void turn_to_angle_chain(float angle, float turn_max_voltage);
-  void turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
-  void turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
+  // void turn_to_angle_chain(float angle);
+  // void turn_to_angle_chain(float angle, float turn_max_voltage);
+  // void turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
+  // void turn_to_angle_chain(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
 
-  void turn_to_angle_custom(float angle, bool direction);
-  void turn_to_angle_custom(float angle, bool direction, float turn_max_voltage, float turn_timeout);
+  // void turn_to_angle_custom(float angle, bool direction);
+  // void turn_to_angle_custom(float angle, bool direction, float turn_max_voltage, float turn_timeout);
 
   void drive_distance(float distance);
   void drive_distance(float distance, float heading);
@@ -120,11 +120,11 @@ public:
   void drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout);
   void drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti);
 
-  void drive_distance_chain(float distance, float distexit);
-  void drive_distance_chain(float distance, float distexit, float heading);
-  void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage);
-  void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout);
-  void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti);
+  // void drive_distance_chain(float distance, float distexit);
+  // void drive_distance_chain(float distance, float distexit, float heading);
+  // void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage);
+  // void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout);
+  // void drive_distance_chain(float distance, float distexit, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti);
 
   void left_swing_to_angle(float angle);
   void left_swing_to_angle(float angle, float swing_max_voltage, float swing_settle_error, float swing_settle_time, float swing_timeout, float swing_kp, float swing_ki, float swing_kd, float swing_starti);
@@ -135,8 +135,10 @@ public:
   void diff_to_angle(float angle, float left_max_volt, float right_max_volt, float diff_settle_error, float diff_settle_time, float diff_timeout, float diff_kp, float diff_ki, float diff_kd, float diff_starti);
   
   void diff(double veloleft, double veloright, double timeout, double wingtimeout);
-
-  void moveToPose(float x, float y, float theta, double dleadint, int timeout, bool direction);
+  void diff2(double veloleft, double veloright, double timeout, double wingtimeout);
+  void diffram(double veloleft, double veloright, double timeout, double wingtimeout);
+  void reram();
+  // void moveToPose(float x, float y, float theta, double dleadint, int timeout, bool direction);
 
   void cross(double timeout);
   void ram(double timeout, double leftvolt, double rightvolt);

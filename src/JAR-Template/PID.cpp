@@ -44,6 +44,7 @@ float PID::compute(float error){
 bool PID::is_settled(){
   if (time_spent_running>timeout && timeout != 0){
     return(true);
+    printf("Timeout\n");
   }
   if (time_spent_settled>settle_time){
     return(true);

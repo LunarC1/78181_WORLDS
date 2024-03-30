@@ -16,6 +16,8 @@
 		"*.tcc": "cpp",
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
-		"regex": "cpp"
+		"regex": "cpp",
+		"random": "cpp",
+		"streambuf": "cpp"
 	}
 }

@@ -3,6 +3,10 @@
 
 int UC_Intake(){
   while(1){
+    if(Controller1.ButtonL1.pressing() && Controller1.ButtonR1.pressing()){
+      back_wings.set(true);
+      back_wings2.set(true);
+    }
     if(Controller1.ButtonL1.pressing()){
       intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
     }
@@ -11,7 +15,10 @@ int UC_Intake(){
     }
     else{
       intakeMotor.stop(hold);
+      back_wings.set(false);
+      back_wings2.set(false);
     }
+    wait(20,msec);
   }
 }
 
@@ -73,31 +80,35 @@ int UC_Hang(){
 
 int UC_frontwings(){
   while(1){
-    if(Controller1.ButtonL2.pressing()){
+    if(Controller1.ButtonL2.pressing() && Controller1.ButtonR2.pressing()){
       front_wings.set(true);
       front_wings2.set(true);
-      // back_wings.set(true);
+    }
+    if(Controller1.ButtonL2.pressing()){
+      front_wings.set(true);
+    }
+    else if(Controller1.ButtonR2.pressing()){
+      front_wings2.set(true);
     }
     else{
       front_wings.set(false);
       front_wings2.set(false);
-      // back_wings.set(false);
     }
   }
 }
 
-int UC_backwings(){
-  bool bwing_io = false; 
-  while(1){
-    if(Controller1.ButtonR2.pressing()){
-      waitUntil(Controller1.ButtonR2.pressing() == false);
-      bwing_io =!bwing_io;
-    }
-    back_wings.set(bwing_io);
-    back_wings2.set(bwing_io);
-    wait(20,msec);
-  }  
-}
+// int UC_backwings(){
+//   bool bwing_io = false; 
+//   while(1){
+//     if(Controller1.ButtonR2.pressing()){
+//       waitUntil(Controller1.ButtonR2.pressing() == false);
+//       bwing_io =!bwing_io;
+//     }
+//     back_wings.set(bwing_io);
+//     back_wings2.set(bwing_io);
+//     wait(20,msec);
+//   }  
+// }
 
 int UC_distance(){
   double distanceground;

@@ -15,7 +15,7 @@ motor RF = motor(PORT1, ratio6_1, false);
 motor RM = motor(PORT2, ratio6_1, false);
 motor RB = motor(PORT3, ratio6_1, false);
 
-inertial Inertial100 = inertial(PORT11);
+inertial Inertial100 = inertial(PORT12);
 
 digital_out front_wings = digital_out(Brain.ThreeWirePort.B);
 digital_out front_wings2 = digital_out(Brain.ThreeWirePort.C);

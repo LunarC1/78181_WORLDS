@@ -1,8 +1,8 @@
 #include "vex.h"
 #include "usercontrol.hpp"
-#include "image.h"
-#include "jason.h"
-// #include "samson.h"
+#include "vexfield.h"
+#include "logo.h"
+#include "rlogo.h"
 #include "autofunctions.hpp"
 #include <cmath>
 using namespace vex;
@@ -47,7 +47,7 @@ motor_group(LF,LM,LB),
 motor_group(RF,RM,RB),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT11,
+PORT12,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
 3.25,
@@ -106,38 +106,30 @@ int autonState = 0;
 // int current_auton_selection = 0;
 // bool auto_started = false;
 
-int brainimg(){
-  while(1){
-    Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    wait(20,msec);
-  }
-}
-
 int horvert(){
   double hangpos;
   bool ver_is_pressed = false;
   bool hor_is_pressed = false;
-  bool ratchet = false;
   hangrot.resetPosition(); 
   while(1){
     hangpos = std::abs(hangrot.position(rotationUnits::rev));
-    Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
+    // Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
     if(Controller1.ButtonA.pressing() && hor_is_pressed == false){ //Click once, set ratchet to false, lift up
-      pistonratchet.set(false);
-      ratchet = false;
+      // pistonratchet.set(false);
+      // ratchet = false;
       while(hangpos <= 1.15){
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         cataMotor.spin(forward,-100,pct);
-        Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
+        // Brain.Screen.printAt(200, 120, "Position:%f\n",hangpos);
         wait(20,msec);
       }
       cataMotor.stop(hold);
       hor_is_pressed = true;
     }
     else if(Controller1.ButtonA.pressing() && hor_is_pressed == true){ //Click another time, set ratchet to true, lift down
-      pistonratchet.set(true);
-      ratchet = true;
-      while(hangpos >= 0.4){
+      // pistonratchet.set(true);
+      // ratchet = true;
+      while(hangpos >= 0.01){
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         cataMotor.spin(forward,100,pct);
         wait(20,msec);
@@ -146,9 +138,9 @@ int horvert(){
     }
 
     if(Controller1.ButtonB.pressing() && ver_is_pressed == false){ //Click once, set ratchet to false, lift up
-      pistonratchet.set(false);
-      ratchet = false;
-      while(hangpos <= 2.6){
+      // pistonratchet.set(false);
+      // ratchet = false;
+      while(hangpos <= 3.8){
         cataMotor.spin(forward,-100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         wait(20,msec);
@@ -157,9 +149,9 @@ int horvert(){
       ver_is_pressed = true;
     }
     else if(Controller1.ButtonB.pressing() && ver_is_pressed == true){ //Click another time, set ratchet to true, lift down
-      ratchet = true;
-      pistonratchet.set(true);
-      while(hangpos >= 0.4){
+      // ratchet = true;
+      // pistonratchet.set(true);
+      while(hangpos >= 0.125){
         cataMotor.spin(forward,100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         wait(20,msec);
@@ -167,29 +159,45 @@ int horvert(){
       cataMotor.stop(hold);
     }
 
-    if (Controller1.ButtonDown.pressing()){ //Manual Lift function
-      pistonratchet.set(false);
+    if(Controller1.ButtonDown.pressing()){ //Manual Lift function
+      // pistonratchet.set(false);
       // ratchet = false;
       cataMotor.spin(forward,100,percent);
     }
     else if (Controller1.ButtonUp.pressing()){
-      pistonratchet.set(true);
+      // pistonratchet.set(true);
       // ratchet = true;
       cataMotor.spin(forward,-100,percent);
     }
     else cataMotor.stop(hold);
-
-    if(Controller1.ButtonX.pressing()){ // Piston Ratchet function
-      waitUntil(Controller1.ButtonX.pressing() == false);
-      ratchet =! ratchet;
-    }
-    pistonratchet.set(ratchet);
   }
     wait(20,msec);
 }
 
+int pistonratchet2(){
+  bool ratchet = false;
+  while(1){
+    if(Controller1.ButtonX.pressing()){ // Piston Ratchet function
+      waitUntil(Controller1.ButtonX.pressing() == false);
+      ratchet =!ratchet;
+      if(ratchet == true){
+        Controller1.Screen.clearScreen();
+      Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("Ratchet Engaged");
+      }
+      else if(ratchet == false){
+        Controller1.Screen.clearScreen();
+        Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("Ratchet NOT Engaged");
+      }
+    }
+    pistonratchet.set(ratchet);
+    wait(20,msec);
+  }
+}
+
 int current_auton_selection = 0;
-bool auto_started = false;
+// bool auto_started = false;
 
 void pre_auton(void) {
   vexcodeInit();
@@ -209,105 +217,199 @@ void pre_auton(void) {
     }
 
     // while(auto_started == false){            //Changing the names below will only change their names on the
-    //   // Brain.Screen.clearScreen();            //brain screen for auton selection.
-    //   switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
-    //     case 0:
-    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    //       Brain.Screen.printAt(200, 220, "Skills");
-    //       break;
-    //     case 1:
-    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    //       Brain.Screen.drawCircle(240, 15, 13); 
-    //       Brain.Screen.drawCircle(455, 15, 13); 
-    //       Brain.Screen.printAt(200, 220, "AWP");
-    //       break;
-    //     case 2:
-    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    //       Brain.Screen.drawCircle(320, 120, 13);
-    //       Brain.Screen.drawCircle(258, 120, 13); 
-    //       Brain.Screen.drawCircle(240, 15, 13); 
-    //       Brain.Screen.drawCircle(455, 15, 13); 
-    //       Brain.Screen.printAt(200, 220, "Steal AWP");
-    //       break;
-    //     case 3:
-    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    //       Brain.Screen.drawCircle(160, 120, 13); 
-    //       Brain.Screen.drawCircle(222, 120, 13); 
-    //       Brain.Screen.drawCircle(240, 15, 13); 
-    //       Brain.Screen.drawCircle(222, 80, 13); 
-    //       Brain.Screen.drawCircle(25, 15, 13); 
-    //       Brain.Screen.printAt(200, 220, "Safe sixball");
-    //       break;
-    //     case 4:
-    //       Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-    //       // Brain.Screen.drawRectangle(120, 20, 45, 55); 
-    //       Brain.Screen.drawCircle(160, 120, 13); 
-    //       Brain.Screen.drawCircle(222, 120, 13); 
-    //       Brain.Screen.drawCircle(222, 80, 13); 
-    //       Brain.Screen.drawCircle(25, 15, 13); 
-    //       Brain.Screen.printAt(200, 220, "Fiveball");
-    //       break;
-    //   }
-    //   if(Brain.Screen.pressing()){
-    //     while(Brain.Screen.pressing()) {}
-    //     current_auton_selection ++;
-    //   } else if (current_auton_selection == 8){
-    //     current_auton_selection = 0;
-    //   }
-    //   task::sleep(10);
-    // }
+      // Brain.Screen.clearScreen();            //brain screen for auton selection.
+      // switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
+//         case 0:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.printAt(350, 43, "Testing");
+//           break; 
+//         case 1:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.drawCircle(170, 18, 12); 
+//           Brain.Screen.drawCircle(280, 18, 12); 
+//           Brain.Screen.printAt(350, 43, "AWP");
+//           break; 
+//         case 2:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.drawCircle(170, 18, 12); 
+//           Brain.Screen.drawCircle(280, 18, 12); 
+//           Brain.Screen.drawCircle(210, 115, 12); 
+//           Brain.Screen.printAt(335, 43, "Steal AWP");
+//           break; 
+//         case 3:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.drawCircle(70, 18, 12); 
+//           Brain.Screen.drawCircle(170, 18, 12); 
+//           Brain.Screen.drawCircle(130, 120, 12); 
+//           Brain.Screen.drawCircle(160, 120, 12); 
+//           Brain.Screen.drawCircle(160, 80, 12); 
+//           Brain.Screen.printAt(315, 43, "Safe 6 Ball");
+//           break; 
+//         case 4:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.drawCircle(70, 18, 12); 
+//           Brain.Screen.drawCircle(130, 120, 12); 
+//           Brain.Screen.drawCircle(160, 120, 12); 
+//           Brain.Screen.drawCircle(160, 80, 12); 
+//           Brain.Screen.printAt(315, 43, "Rush 5 Ball");
+//           break; 
+//         case 5:
+//           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+//           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+//           Brain.Screen.setPenWidth(4); 
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.drawLine(310,0,310,240); 
+//           Brain.Screen.drawLine(310,70,480,70); 
+//           Brain.Screen.printAt(320, 43, "Skills");
+//           break; 
+//       }
+//       if(Brain.Screen.pressing()){
+//         while(Brain.Screen.pressing()) {}
+//         Brain.Screen.clearScreen();
+//         current_auton_selection ++;
+//       } else if (current_auton_selection == 8){
+//         current_auton_selection = 0;
+//       }
+//       task::sleep(10);
+//     }
 //   }
 // }
+    
     switch(autonState){
-      case 0: 
-          Brain.Screen.drawImageFromBuffer(jason, 0, 0, sizeof(jason));
-          // Brain.Screen.drawImageFromBuffer(jason, 244, 0, sizeof(samson));
-          // Brain.Screen.drawImageFromBuffer(jason, 425, 0, sizeof(ni));
-          Brain.Screen.printAt(200, 220, "Skills1");
-          break;
-      case 1: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          Brain.Screen.drawCircle(240, 15, 13); 
-          Brain.Screen.drawCircle(455, 15, 13); 
-          Brain.Screen.printAt(200, 220, "AWP");
-          break;
-      case 2: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          Brain.Screen.drawCircle(320, 120, 13); 
-          Brain.Screen.drawCircle(258, 120, 13); 
-          Brain.Screen.drawCircle(240, 15, 13); 
-          Brain.Screen.drawCircle(455, 15, 13); 
-          Brain.Screen.printAt(200, 220, "Steal AWP");
-          break;
-      case 3: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          Brain.Screen.drawCircle(160, 120, 13); 
-          Brain.Screen.drawCircle(222, 120, 13); 
-          Brain.Screen.drawCircle(240, 15, 13);  
-          Brain.Screen.drawCircle(222, 80, 13); 
-          Brain.Screen.drawCircle(25, 15, 13); 
-          Brain.Screen.printAt(200, 220, "Safe sixball");
-          break;
-      case 4: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          // Brain.Screen.drawRectangle(120, 20, 45, 55); 
-          Brain.Screen.drawCircle(160, 120, 13); 
-          Brain.Screen.drawCircle(222, 120, 13); 
-          Brain.Screen.drawCircle(222, 80, 13); 
-          Brain.Screen.drawCircle(25, 15, 13); 
-          Brain.Screen.printAt(200, 220, "Fiveball");
-          break;
-      case 5: 
-          Brain.Screen.drawImageFromBuffer(image, 0, 0, sizeof(image));
-          Brain.Screen.printAt(200, 220, "Testing");
-          break;
+        case 0:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.setFillColor(black); 
+          Brain.Screen.printAt(350, 43, "Sixball");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.setFillColor(blue); 
+          // Brain.Screen.drawRectangle(310,70,480,240);
+          break; 
+        case 1:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.drawCircle(170, 18, 12); 
+          Brain.Screen.drawCircle(280, 18, 12); 
+          Brain.Screen.printAt(350, 43, "AWP");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          break; 
+        case 2:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.drawCircle(170, 18, 12); 
+          Brain.Screen.drawCircle(280, 18, 12); 
+          Brain.Screen.drawCircle(210, 115, 12); 
+          Brain.Screen.printAt(335, 43, "Steal AWP");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          break; 
+        case 3:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.drawCircle(70, 18, 12); 
+          Brain.Screen.drawCircle(170, 18, 12); 
+          Brain.Screen.drawCircle(130, 120, 12); 
+          Brain.Screen.drawCircle(160, 120, 12); 
+          Brain.Screen.drawCircle(160, 80, 12); 
+          Brain.Screen.printAt(315, 43, "Safe 6 Ball");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          break; 
+        case 4:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.drawCircle(70, 18, 12); 
+          Brain.Screen.drawCircle(130, 120, 12); 
+          Brain.Screen.drawCircle(160, 120, 12); 
+          Brain.Screen.drawCircle(160, 80, 12); 
+          Brain.Screen.printAt(315, 43, "Rush 5 Ball");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          break; 
+        case 5:
+          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          Brain.Screen.setPenWidth(4); 
+          Brain.Screen.setFont(monoL); 
+          Brain.Screen.drawLine(310,0,310,240); 
+          Brain.Screen.drawLine(310,70,480,70); 
+          Brain.Screen.printAt(320, 43, "Skills");
+          Brain.Screen.setFont(monoM); 
+          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          break; 
     }
     if(limitselect.pressing()){
       while(limitselect.pressing()) {}
+      Brain.Screen.clearScreen();
       autonState++; 
-    if(autonState>5){
-      autonState = 0; 
     }
+    else if(autonState>5){
+      autonState = 0; 
     }
   }
 }
@@ -325,18 +427,23 @@ void autonomous(void) {
   
   // skills3();
 
-  auto_started = true;
-    switch(current_auton_selection){  
+  // auto_started = true;
+    switch(autonState){  
       case 0:
-      testing();
+        // Worlds_Skills();
+        // noramAWP();
+        sixball();
+        // testing();
+        // RushAWP2();
         // PID_Test();
         // skills3(); //This is the default auton, if you don't select from the brain.
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
-        AWP();
+        noramAWP();
+        // sixball();
         break;
       case 2:
-        skills4();
+        RushAWP();
         break;
       case 3:
         sixball_safe();
@@ -345,7 +452,8 @@ void autonomous(void) {
         sixball();
         break;
       case 5:
-        testing();
+        skills4();
+        break;
   }
   // switch(autonState){
   //   case 0: 
@@ -384,14 +492,27 @@ void usercontrol(void) {
   task Launchtask(UC_Slapper);
   task Extendtask(UC_Hang);
   task Releasetask(UC_frontwings);
-  task Extask(UC_backwings);
+  task Ratchettask(pistonratchet2);
+  // task Extask(UC_backwings);
   // task horizontaltask(UC_horizontalhang);
   // task verticaltask(UC_verticalhang);
   // task hormac(UC_horhangmac);
   // task vermac(UC_verhangmac);
 
   task verhormac(horvert);
-
+  // chassis.set_heading(0);
+  // // intakeMotor.spin(forward,-100,percent);
+  // printf("abc\n");
+  
+  // wait(3,sec);
+  // // chassis.turn_to_angle(90);
+  // chassis.drive_distance(24);
+  
+  // printf("123\n");
+  // while(1){
+  //   chassis.control_arcade();
+  //   wait(20,msec);
+  // }
   // task Endgametask(UC_distance);
   // task pistonratchettask(UC_stick);
   // task destroytask(UC_destroy);
@@ -419,47 +540,58 @@ void usercontrol(void) {
     //   }
     //   wait(10,msec);
     // }
+  //   chassis.set_heading(0);
+  // // intakeMotor.spin(forward,-100,percent);
+  //   chassis.drive_distance(24);
   while (1) {
     // Brain.Screen.printAt(200, 120, "Position:%f",hangrot.position(rotationUnits::rev));
     // printf("Position:%f",hangrot.position(rotationUnits::rev));
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
       chassis.set_drive_exit_conditions(0.3, 10, 600);
-      chassis.set_swing_exit_conditions(1.2, 10, 1300);
-      chassis.set_heading(90);
-      intakeMotor.spin(reverse,30,percent);
-      chassis.diff(-40, -80, 1400, 300);
-      // chassis.set_heading(180);
-      chassis.right_swing_to_angle(70.7);
-      // back_wings.set(true);
-      chassis.drive_distance(-7);
-      intakeMotor.stop(hold);
+      // chassis.set_swing_exit_conditions(1.2, 10, 1300);
+      chassis.diff(-45, -80, 1700, 300);
+      chassis.set_heading(180);
+      chassis.drive_distance(11);
+      chassis.turn_to_angle(72);
+      back_wings2.set(true);
 
-      // cataMotor.spin(forward,68,percent);
-      // kicker.spin(forward,68,percent);
-
-      // // wait(3,sec);
-      // wait(20.7,sec);
-      // cataMotor.stop(brake);
-      // kicker.stop(brake);
-
-      // chassis.set_drive_exit_conditions(0.3, 10, 600);;
-      // chassis.set_heading(315);
-      // intakeMotor.spin(reverse,60,percent);
-      // chassis.drive_distance(17);
-      // chassis.turn_to_angle(62);
-      // chassis.drive_distance(-2);
-      // back_wings.set(true);
+      // chassis.set_drive_exit_conditions(0.3, 10, 600);
+      // chassis.set_swing_exit_conditions(1.2, 10, 1300);
+      // chassis.set_heading(90);
+      // intakeMotor.spin(reverse,30,percent);
+      // chassis.diff(-40, -80, 1400, 300);
+      // // chassis.set_heading(180);
+      // chassis.right_swing_to_angle(70.7);
+      // // back_wings.set(true);
+      // chassis.drive_distance(-7);
       // intakeMotor.stop(hold);
 
+      // // cataMotor.spin(forward,68,percent);
+      // // kicker.spin(forward,68,percent);
+
+      // // // wait(3,sec);
+      // // wait(20.7,sec);
+      // // cataMotor.stop(brake);
+      // // kicker.stop(brake);
+
+      // // chassis.set_drive_exit_conditions(0.3, 10, 600);;
+      // // chassis.set_heading(315);
+      // // intakeMotor.spin(reverse,60,percent);
+      // // chassis.drive_distance(17);
+      // // chassis.turn_to_angle(62);
+      // // chassis.drive_distance(-2);
+      // // back_wings.set(true);
+      // // intakeMotor.stop(hold);
+
       
-      // cataMotor.spin(forward,67,percent);
-      // kicker.spin(forward,67,percent);
-      // // wait(3,sec);
-      // wait(21,sec);
-      // cataMotor.stop(brake);
-      // kicker.stop(brake);
-      // back_wings.set(false);
+      // // cataMotor.spin(forward,67,percent);
+      // // kicker.spin(forward,67,percent);
+      // // // wait(3,sec);
+      // // wait(21,sec);
+      // // cataMotor.stop(brake);
+      // // kicker.stop(brake);
+      // // back_wings.set(false);
       
     }
     // if(Controller1.ButtonUp.pressing()){
