@@ -154,7 +154,7 @@ void Safesix(){
   chassis.diff(-70,-30,1700,620);
   // chassis.set_heading(0);
   chassis.drive_distance(8);
-  chassis.turn_to_angle(186);
+  chassis.turn_to_angle(192);
   intakeMotor.spin(fwd,-100,pct);
   chassis.DriveL.spin(fwd, 9, volt);
   chassis.DriveR.spin(fwd, 9, volt);
@@ -162,38 +162,38 @@ void Safesix(){
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);
   chassis.drive_distance(-4);
-  // chassis.diff(-15,-60,400,200);
-  // // chassis.drive_distance(9);
-  // chassis.turn_to_angle(103);
+  chassis.diff(-15,-60,400,200);
+  // chassis.drive_distance(9);
+  chassis.turn_to_angle(103);
 
-  // intakeMotor.spin(forward,100,pct);
+  intakeMotor.spin(forward,100,pct);
 
-  // chassis.set_drive_exit_conditions(0.8, 3, 1150);
-  // chassis.set_turn_exit_conditions(1.1, 2, 700);
-  // chassis.drive_distance(52);l
-  // wait(200,msec);
-  // chassis.turn_to_angle(235);
-  // chassis.set_drive_exit_conditions(1, 3, 265);
-  // intakeMotor.spin(reverse,100,pct);
-  // chassis.drive_distance(3);
-  // wait(200,msec);//300
-  // intakeMotor.spin(forward,100,pct);
-  // chassis.set_drive_exit_conditions(0.4, 3, 1150);
-  // chassis.turn_to_angle(157);
-  // chassis.drive_distance(15);
-  // wait(100,msec);
+  chassis.set_drive_exit_conditions(0.8, 3, 1150);
+  chassis.set_turn_exit_conditions(1.1, 2, 700);
+  chassis.drive_distance(52);
+  wait(200,msec);
+  chassis.turn_to_angle(235);
+  chassis.set_drive_exit_conditions(1, 3, 265);
+  intakeMotor.spin(reverse,100,pct);
+  chassis.drive_distance(3);
+  wait(200,msec);//300
+  intakeMotor.spin(forward,100,pct);
+  chassis.set_drive_exit_conditions(0.4, 3, 1150);
+  chassis.turn_to_angle(157);
+  chassis.drive_distance(15);
+  wait(100,msec);
 
-  // chassis.turn_to_angle(263);
+  chassis.turn_to_angle(263);
 
-  // front_wings.set(true);
-  // intakeMotor.spin(reverse,100,percent);
-  // chassis.DriveL.spin(fwd, 12, volt);
-  // chassis.DriveR.spin(fwd, 12, volt);
-  // wait(1000,msec);
-  // chassis.set_heading(270);
-  // front_wings.set(false);
-  // chassis.drive_distance(-15);
-  // chassis.turn_to_angle(90);
+  front_wings.set(true);
+  intakeMotor.spin(reverse,100,percent);
+  chassis.DriveL.spin(fwd, 12, volt);
+  chassis.DriveR.spin(fwd, 12, volt);
+  wait(1000,msec);
+  chassis.set_heading(270);
+  front_wings.set(false);
+  chassis.drive_distance(-15);
+  chassis.turn_to_angle(90);
 }
 
 void RushAWP2(){
