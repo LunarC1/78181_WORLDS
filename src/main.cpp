@@ -211,7 +211,9 @@ int pistonratchet2(){
 
 void debug_menu(int c){
   bool debug_is_pressed = false;
-  bool selector_is_pressed = buttons[1].state;
+  // bool selector_is_pressed = buttons[1].state;
+  // debug_is_pressed =!debug_is_pressed;
+  // selector_is_pressed =!selector_is_pressed;
   Brain.Screen.pressed( userTouchCallbackPressed );
   Brain.Screen.released( userTouchCallbackReleased );
   displayButtonControls( 0, false );
@@ -247,6 +249,7 @@ void debug_menu(int c){
       Brain.Screen.clearScreen();
       waitUntil(Brain.Screen.pressing() == false);
         debug_is_pressed =!debug_is_pressed;
+        // selector_is_pressed =!selector_is_pressed;
     }
     if(debug_is_pressed == true){
       // Brain.Screen.clearScreen();
@@ -266,6 +269,24 @@ void debug_menu(int c){
       Brain.Screen.printAt(270, 140, "Intake Temp:%f",std::floor(intakeMotor.temperature(percent)));
       Brain.Screen.printAt(270, 190, "Kicker Temp:%f",std::floor(kicker.temperature(percent)));
     }
+    // if(selector_is_pressed == true){
+    //   // Brain.Screen.clearScreen();
+    //   // while(is_pressed == true) { break;}
+      
+    //   Brain.Screen.setFillColor(clearerr); 
+    //   // Brain.Screen.printAt(60, 30, "Heading:%f",heading);
+    //   Brain.Screen.setFont(mono30);
+    //   Brain.Screen.setPenColor(blue);
+    //   Brain.Screen.printAt(155, 40, "Selector Menu:");
+    //   Brain.Screen.setFont(mono20);
+    //   Brain.Screen.setPenColor(white);
+    //   Brain.Screen.printAt(20, 90, "Heading:%f",std::floor(Inertial100.heading()));
+    //   Brain.Screen.printAt(20, 140, "Battery:%f",std::floor(Brain.Battery.capacity()));
+    //   Brain.Screen.printAt(20, 190, "DT Avg Temp:%f",std::floor((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+    //   Brain.Screen.printAt(270, 90, "Hang Temp:%f",std::floor(cataMotor.temperature(percent)));
+    //   Brain.Screen.printAt(270, 140, "Intake Temp:%f",std::floor(intakeMotor.temperature(percent)));
+    //   Brain.Screen.printAt(270, 190, "Kicker Temp:%f",std::floor(kicker.temperature(percent)));
+    // }
     wait(20,msec);
     // return 0;
   }
@@ -644,14 +665,16 @@ void usercontrol(void) {
     // printf("Position:%f",hangrot.position(rotationUnits::rev));
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
+      back_wings.set(true);
       chassis.set_drive_exit_conditions(0.3, 10, 600);
       // chassis.set_swing_exit_conditions(1.2, 10, 1300);
       chassis.diff(-45, -80, 1700, 300);
+      back_wings.set(false);
       chassis.set_heading(180);
-      chassis.drive_distance(11);
+      chassis.diff(40,70,400,400);
+      // chassis.drive_distance(11);
       chassis.turn_to_angle(72);
-      chassis.drive_distance(-4);
-      back_wings2.set(true);
+      chassis.drive_distance(-6);
 
       // chassis.set_drive_exit_conditions(0.3, 10, 600);
       // chassis.set_swing_exit_conditions(1.2, 10, 1300);

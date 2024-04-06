@@ -126,6 +126,8 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
   turn_to_angle(angle, turn_max_voltage, turn_settle_error, turn_settle_time, turn_timeout, turn_kp, turn_ki, turn_kd, turn_starti);
 }
 
+double errang = 0;
+
 void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti){
   desired_heading = angle;
   printf("[start] Left_swing_to_angle: %f\n",get_absolute_heading());
@@ -135,9 +137,10 @@ void Drive::turn_to_angle(float angle, float turn_max_voltage, float turn_settle
     float output = turnPID.compute(error);
     output = clamp(output, -turn_max_voltage, turn_max_voltage);
     drive_with_voltage(output, -output);
-    printf("error:%f\n",error);
+    // printf("error:%f\n",error);
     task::sleep(10);
   }
+  double errang = get_absolute_heading();
   printf("[end] Left_swing_to_angle: %f\n",get_absolute_heading());
   DriveL.stop(hold);
   DriveR.stop(hold);
@@ -214,6 +217,8 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
   drive_distance(distance, heading, drive_max_voltage, heading_max_voltage, drive_settle_error, drive_settle_time, drive_timeout, drive_kp, drive_ki, drive_kd, drive_starti, heading_kp, heading_ki, heading_kd, heading_starti);
 }
 
+double errlin = 0;
+
 void Drive::drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage, float drive_settle_error, float drive_settle_time, float drive_timeout, float drive_kp, float drive_ki, float drive_kd, float drive_starti, float heading_kp, float heading_ki, float heading_kd, float heading_starti){
   desired_heading = heading;
   printf("[start] distance:");
@@ -235,6 +240,7 @@ void Drive::drive_distance(float distance, float heading, float drive_max_voltag
     drive_with_voltage(drive_output+heading_output, drive_output-heading_output);
     task::sleep(10);
   }
+  errlin = average_position;
   printf("[end] distance: %f",average_position);
   DriveL.stop(hold);
   DriveR.stop(hold);
@@ -364,12 +370,24 @@ void Drive::diff2(double veloleft, double veloright, double timeout = 4000, doub
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);
 }
-void Drive::reram(){
+void Drive::reramF(){
+  // float angle = Inertial100.heading();
   chassis.DriveL.spin(fwd, -6, volt);
   chassis.DriveR.spin(fwd, -6, volt);
   wait(550,msec);
+  // chassis.turn_to_angle(175);
   chassis.DriveL.spin(fwd, 9, volt);
   chassis.DriveR.spin(fwd, 9, volt);
+  wait(800,msec);
+  chassis.DriveL.spin(fwd,0,volt);
+  chassis.DriveR.spin(fwd,0,volt);
+}
+void Drive::reramB(){
+  chassis.DriveL.spin(fwd, 6, volt);
+  chassis.DriveR.spin(fwd, 6, volt);
+  wait(550,msec);
+  chassis.DriveL.spin(fwd, -9, volt);
+  chassis.DriveR.spin(fwd, -9, volt);
   wait(450,msec);
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);

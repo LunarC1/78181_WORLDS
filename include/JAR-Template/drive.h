@@ -101,6 +101,7 @@ public:
   void set_swing_exit_conditions(float swing_settle_error, float swing_settle_time, float swing_timeout);
   void set_diff_exit_conditions(float diff_settle_error, float diff_settle_time, float diff_timeout);
 
+  double errang;
   void turn_to_angle(float angle);
   void turn_to_angle(float angle, float turn_max_voltage);
   void turn_to_angle(float angle, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
@@ -113,7 +114,7 @@ public:
 
   // void turn_to_angle_custom(float angle, bool direction);
   // void turn_to_angle_custom(float angle, bool direction, float turn_max_voltage, float turn_timeout);
-
+  double errlin;
   void drive_distance(float distance);
   void drive_distance(float distance, float heading);
   void drive_distance(float distance, float heading, float drive_max_voltage, float heading_max_voltage);
@@ -137,7 +138,8 @@ public:
   void diff(double veloleft, double veloright, double timeout, double wingtimeout);
   void diff2(double veloleft, double veloright, double timeout, double wingtimeout);
   void diffram(double veloleft, double veloright, double timeout, double wingtimeout);
-  void reram();
+  void reramF();
+  void reramB();
   // void moveToPose(float x, float y, float theta, double dleadint, int timeout, bool direction);
 
   void cross(double timeout);

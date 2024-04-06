@@ -23,31 +23,22 @@ int UC_Intake(){
 }
 
 int UC_Slapper(){
-  bool setup_io = false;
+  // while(1){
+  //   if(Controller1.ButtonRight.pressing()){
+  //     kicker.spin(fwd,100,pct);
+  //   }
+  //   else kicker.stop(coast);
+  //   wait(20,msec);
+  // }
+  bool kick_io = false;
   while(1){
     if (Controller1.ButtonRight.pressing()){
-      kicker.spin(forward,100,percent);
+      waitUntil(Controller1.ButtonRight.pressing() == false);
+      kick_io=!kick_io;
     }
-    else{
-      kicker.stop(coast);
-    }
-    // if(Controller1.ButtonR2.pressing()){
-    //   setup_io = !setup_io;
-    // }
-    // if(setup_io==true){
-    //   cataMotor.spin(forward,67,percent);
-    //   kicker.spin(forward,67,percent);
-    // }
-    // else{
-    //   cataMotor.stop(coast);
-    //   kicker.stop(coast);
-    // }
-
-    
-    // else if(setup_io==false){
-    //   cataMotor.stop(coast);
-    //   kicker.stop(coast);
-    // }
+    if(kick_io == true) kicker.spin(forward,87,percent);
+    else kicker.stop(coast);
+    wait(20,msec);
   }
 }
 
@@ -110,18 +101,18 @@ int UC_frontwings(){
 //   }  
 // }
 
-int UC_distance(){
-  double distanceground;
-  while(1){
-    distanceground = balance.objectDistance(mm);
-    Controller1.Screen.clearLine(); 
-    Controller1.Screen.print("%d",distanceground); 
-    if(distanceground > 27 && distanceground < 37){
-      Controller1.rumble(rumbleShort); 
-    }
-    wait(50,msec);
-  }
-}
+// int UC_distance(){
+//   double distanceground;
+//   while(1){
+//     distanceground = balance.objectDistance(mm);
+//     Controller1.Screen.clearLine(); 
+//     Controller1.Screen.print("%d",distanceground); 
+//     if(distanceground > 27 && distanceground < 37){
+//       Controller1.rumble(rumbleShort); 
+//     }
+//     wait(50,msec);
+//   }
+// }
 
 // int UC_stick(){
 //   bool stick_io = false; 

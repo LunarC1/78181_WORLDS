@@ -28,11 +28,11 @@ limit limitselect = limit(Brain.ThreeWirePort.G);
 motor intakeMotor = motor(PORT8, ratio18_1, false);
 
 motor cataMotor = motor(PORT9, ratio18_1, false);
-motor kicker = motor(PORT21, ratio18_1, true);
+motor kicker = motor(PORT19, ratio18_1, true);
 
 rotation hangrot = rotation(PORT10, false);
 
-distance balance = distance(PORT19);
+distance balance = distance(PORT21);
 
 distance recoil = distance(PORT17);
 

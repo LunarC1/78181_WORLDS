@@ -12,8 +12,8 @@ typedef struct _button {
 
 // Button definitions
 button buttons[] = {
-  {   310,  0, 170, 70,  false, 0x800000 },
-//   {  150,  30, 60, 60,  false, 0x008000 },
+//   {   310,  0, 170, 70,  false, 0x800000 },
+//   {  310,  70, 170, 210,  false, 0x0000FF },
 //   {  270,  30, 60, 60,  false, 0x000080 },
 //   {  390,  30, 60, 60,  false, 0x808000 },
 //   {   30, 150, 60, 60,  false, 0x800080 },
