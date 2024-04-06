@@ -4,7 +4,10 @@
 #include "logo.h"
 #include "rlogo.h"
 #include "autofunctions.hpp"
+#include "button.h"
 #include <cmath>
+#include <iomanip>
+// #include <string>
 using namespace vex;
 competition Competition;
 
@@ -47,7 +50,7 @@ motor_group(LF,LM,LB),
 motor_group(RF,RM,RB),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT12,
+PORT14,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
 3.25,
@@ -59,7 +62,7 @@ PORT12,
 
 //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
 //For most cases 360 will do fine here, but this scale factor can be very helpful when precision is necessary.
-353.5,
+352,
 
 /*---------------------------------------------------------------------------*/
 /*                                  PAUSE!                                   */
@@ -150,7 +153,7 @@ int horvert(){
     }
     else if(Controller1.ButtonB.pressing() && ver_is_pressed == true){ //Click another time, set ratchet to true, lift down
       // ratchet = true;
-      // pistonratchet.set(true);
+      // pistonratchet.set(true);z
       while(hangpos >= 0.125){
         cataMotor.spin(forward,100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
@@ -196,12 +199,89 @@ int pistonratchet2(){
   }
 }
 
+// double round_to(double value, double precision = 1.0){
+//     return std::round(value / precision) * precision;
+// }
+
+// int rounding(double x){
+//   int myx = (int)x;
+//   while(myx%10!=0) x/=10;
+//   return x;
+// }
+
+void debug_menu(int c){
+  bool debug_is_pressed = false;
+  bool selector_is_pressed = buttons[1].state;
+  Brain.Screen.pressed( userTouchCallbackPressed );
+  Brain.Screen.released( userTouchCallbackReleased );
+  displayButtonControls( 0, false );
+  // double heading = std::round(Inertial100.heading());
+  // double battery = std::floor(Brain.Battery.capacity());
+  // double temp = std::floor((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6);
+  while(1){
+    // double heading = rounding(Inertial100.heading());
+    // double battery = round(Brain.Battery.capacity());
+    // double temp = round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6);
+    if(debug_is_pressed == false){
+      
+      // while(is_pressed == false) {Brain.Screen.clearScreen(); break;}
+      Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+      Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+      Brain.Screen.setPenWidth(4); 
+      Brain.Screen.setFont(monoL); 
+      Brain.Screen.drawLine(310,0,310,240); 
+      Brain.Screen.drawLine(310,70,480,70); 
+      Brain.Screen.setFillColor(black); 
+      if(c == 0) Brain.Screen.printAt(350, 43, "AWP");
+      else if(c == 1) Brain.Screen.printAt(350, 43, "Sixball");
+      else if(c == 2) Brain.Screen.printAt(350, 43, "Steal AWP");
+      else if(c == 3) Brain.Screen.printAt(350, 43, "Safe Six");
+      else if(c == 4) Brain.Screen.printAt(350, 43, "Rush Five");
+      else if(c == 5) Brain.Screen.printAt(350, 43, "Skills");
+      Brain.Screen.setFont(mono40);
+      Brain.Screen.setFillColor(blue);
+      Brain.Screen.drawRectangle(310,70,170,210);
+      Brain.Screen.printAt(345,160,"Debug");
+    }
+    if(Brain.Screen.pressing()){
+      Brain.Screen.clearScreen();
+      waitUntil(Brain.Screen.pressing() == false);
+        debug_is_pressed =!debug_is_pressed;
+    }
+    if(debug_is_pressed == true){
+      // Brain.Screen.clearScreen();
+      // while(is_pressed == true) { break;}
+      
+      Brain.Screen.setFillColor(clearerr); 
+      // Brain.Screen.printAt(60, 30, "Heading:%f",heading);
+      Brain.Screen.setFont(mono30);
+      Brain.Screen.setPenColor(blue);
+      Brain.Screen.printAt(155, 40, "Debug Menu:");
+      Brain.Screen.setFont(mono20);
+      Brain.Screen.setPenColor(white);
+      Brain.Screen.printAt(20, 90, "Heading:%f",std::floor(Inertial100.heading()));
+      Brain.Screen.printAt(20, 140, "Battery:%f",std::floor(Brain.Battery.capacity()));
+      Brain.Screen.printAt(20, 190, "DT Avg Temp:%f",std::floor((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+      Brain.Screen.printAt(270, 90, "Hang Temp:%f",std::floor(cataMotor.temperature(percent)));
+      Brain.Screen.printAt(270, 140, "Intake Temp:%f",std::floor(intakeMotor.temperature(percent)));
+      Brain.Screen.printAt(270, 190, "Kicker Temp:%f",std::floor(kicker.temperature(percent)));
+    }
+    wait(20,msec);
+    // return 0;
+  }
+  // Brain.Screen.clearScreen();
+}
+
 int current_auton_selection = 0;
-// bool auto_started = false;
+bool auto_started = false;
 
 void pre_auton(void) {
   vexcodeInit();
   default_constants();
+  Brain.Screen.pressed( userTouchCallbackPressed );
+  Brain.Screen.released( userTouchCallbackReleased );
+
+  // task DebugTask(debug_menu);
   // Inertial100.calibrate();
   printf("Battery: %f \n",std::round(Brain.Battery.capacity()));
   intakeMotor.setStopping(hold);
@@ -216,9 +296,9 @@ void pre_auton(void) {
       wait(10,msec);
     }
 
-    // while(auto_started == false){            //Changing the names below will only change their names on the
-      // Brain.Screen.clearScreen();            //brain screen for auton selection.
-      // switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
+//     while(auto_started == false){            //Changing the names below will only change their names on the
+//       // Brain.Screen.clearScreen();            //brain screen for auton selection.
+//       switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
 //         case 0:
 //           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
 //           Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
@@ -226,7 +306,17 @@ void pre_auton(void) {
 //           Brain.Screen.setFont(monoL); 
 //           Brain.Screen.drawLine(310,0,310,240); 
 //           Brain.Screen.drawLine(310,70,480,70); 
-//           Brain.Screen.printAt(350, 43, "Testing");
+//           Brain.Screen.setFillColor(black); 
+//           Brain.Screen.printAt(350, 43, "AWP");
+//           Brain.Screen.setFont(monoM); 
+//           // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+//           // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+//           // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+//           // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+//           Brain.Screen.setFillColor(red); 
+//           Brain.Screen.drawRectangle(310,70,170,210);
+//           Brain.Screen.setFont(monoL); 
+//           Brain.Screen.printAt(320,160, "Debug Menu");
 //           break; 
 //         case 1:
 //           Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
@@ -291,9 +381,9 @@ void pre_auton(void) {
 //       if(Brain.Screen.pressing()){
 //         while(Brain.Screen.pressing()) {}
 //         Brain.Screen.clearScreen();
-//         current_auton_selection ++;
+//         autonState ++;
 //       } else if (current_auton_selection == 8){
-//         current_auton_selection = 0;
+//         autonState = 0;
 //       }
 //       task::sleep(10);
 //     }
@@ -302,105 +392,111 @@ void pre_auton(void) {
     
     switch(autonState){
         case 0:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.setFillColor(black); 
-          Brain.Screen.printAt(350, 43, "Sixball");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.setFillColor(black); 
+          // Brain.Screen.printAt(350, 43, "AWP");
+          // Brain.Screen.setFont(monoM); 
+          // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(0);
           // Brain.Screen.setFillColor(blue); 
           // Brain.Screen.drawRectangle(310,70,480,240);
           break; 
         case 1:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.drawCircle(170, 18, 12); 
-          Brain.Screen.drawCircle(280, 18, 12); 
-          Brain.Screen.printAt(350, 43, "AWP");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.drawCircle(170, 18, 12); 
+          // Brain.Screen.drawCircle(280, 18, 12); 
+          // Brain.Screen.printAt(350, 43, "Sixball");
+          // Brain.Screen.setFont(monoM); 
+          // // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(1);
           break; 
         case 2:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.drawCircle(170, 18, 12); 
-          Brain.Screen.drawCircle(280, 18, 12); 
-          Brain.Screen.drawCircle(210, 115, 12); 
-          Brain.Screen.printAt(335, 43, "Steal AWP");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.drawCircle(170, 18, 12); 
+          // Brain.Screen.drawCircle(280, 18, 12); 
+          // Brain.Screen.drawCircle(210, 115, 12); 
+          // Brain.Screen.printAt(335, 43, "Steal AWP");
+          // Brain.Screen.setFont(monoM); 
+          // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(2);
           break; 
         case 3:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.drawCircle(70, 18, 12); 
-          Brain.Screen.drawCircle(170, 18, 12); 
-          Brain.Screen.drawCircle(130, 120, 12); 
-          Brain.Screen.drawCircle(160, 120, 12); 
-          Brain.Screen.drawCircle(160, 80, 12); 
-          Brain.Screen.printAt(315, 43, "Safe 6 Ball");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.drawCircle(70, 18, 12); 
+          // Brain.Screen.drawCircle(170, 18, 12); 
+          // Brain.Screen.drawCircle(130, 120, 12); 
+          // Brain.Screen.drawCircle(160, 120, 12); 
+          // Brain.Screen.drawCircle(160, 80, 12); 
+          // Brain.Screen.printAt(315, 43, "Safe 6 Ball");
+          // Brain.Screen.setFont(monoM); 
+          // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(3);
           break; 
         case 4:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.drawCircle(70, 18, 12); 
-          Brain.Screen.drawCircle(130, 120, 12); 
-          Brain.Screen.drawCircle(160, 120, 12); 
-          Brain.Screen.drawCircle(160, 80, 12); 
-          Brain.Screen.printAt(315, 43, "Rush 5 Ball");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.drawCircle(70, 18, 12); 
+          // Brain.Screen.drawCircle(130, 120, 12); 
+          // Brain.Screen.drawCircle(160, 120, 12); 
+          // Brain.Screen.drawCircle(160, 80, 12); 
+          // Brain.Screen.printAt(315, 43, "Rush 5 Ball");
+          // Brain.Screen.setFont(monoM); 
+          // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(4);
           break; 
         case 5:
-          Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
-          Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
-          Brain.Screen.setPenWidth(4); 
-          Brain.Screen.setFont(monoL); 
-          Brain.Screen.drawLine(310,0,310,240); 
-          Brain.Screen.drawLine(310,70,480,70); 
-          Brain.Screen.printAt(320, 43, "Skills");
-          Brain.Screen.setFont(monoM); 
-          Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
-          Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
-          Brain.Screen.printAt(320, 200, "DT Avg Temp:");
-          Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          // Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
+          // Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
+          // Brain.Screen.setPenWidth(4); 
+          // Brain.Screen.setFont(monoL); 
+          // Brain.Screen.drawLine(310,0,310,240); 
+          // Brain.Screen.drawLine(310,70,480,70); 
+          // Brain.Screen.printAt(320, 43, "Skills");
+          // Brain.Screen.setFont(monoM); 
+          // Brain.Screen.printAt(320, 100, "Heading:%f",std::round(Inertial100.heading()));
+          // Brain.Screen.printAt(320, 150, "Battery:%f",std::round(Brain.Battery.capacity()));
+          // Brain.Screen.printAt(320, 200, "DT Avg Temp:");
+          // Brain.Screen.printAt(320, 220, "%f",std::round((LF.temperature(percent)+LM.temperature(percent)+LB.temperature(percent)+RF.temperature(percent)+RM.temperature(percent)+RB.temperature(percent))/6));
+          debug_menu(5);
           break; 
     }
     if(limitselect.pressing()){
@@ -430,20 +526,20 @@ void autonomous(void) {
   // auto_started = true;
     switch(autonState){  
       case 0:
-        // Worlds_Skills();
-        // noramAWP();
-        sixball();
+        Worlds_Skills();
+        // ramAWP2();
+        // sixball();
         // testing();
         // RushAWP2();
         // PID_Test();
         // skills3(); //This is the default auton, if you don't select from the brain.
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
-        noramAWP();
-        // sixball();
+        // noramAWP2();
+        sixball();
         break;
       case 2:
-        RushAWP();
+        Safesix();
         break;
       case 3:
         sixball_safe();
@@ -554,6 +650,7 @@ void usercontrol(void) {
       chassis.set_heading(180);
       chassis.drive_distance(11);
       chassis.turn_to_angle(72);
+      chassis.drive_distance(-4);
       back_wings2.set(true);
 
       // chassis.set_drive_exit_conditions(0.3, 10, 600);
