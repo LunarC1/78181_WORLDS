@@ -547,9 +547,10 @@ void autonomous(void) {
   // auto_started = true;
     switch(autonState){  
       case 0:
-        Worlds_Skills();
+        // Worlds_Skills();
         // ramAWP2();
         // sixball();
+        Safesix();
         // testing();
         // RushAWP2();
         // PID_Test();
@@ -748,4 +749,4 @@ int main() {
   while (true) {
     wait(100, msec);
   }
-}
+} 

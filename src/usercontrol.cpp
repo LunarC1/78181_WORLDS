@@ -36,7 +36,7 @@ int UC_Slapper(){
       waitUntil(Controller1.ButtonRight.pressing() == false);
       kick_io=!kick_io;
     }
-    if(kick_io == true) kicker.spin(forward,87,percent);
+    if(kick_io == true) kicker.spin(forward,69,percent);
     else kicker.stop(coast);
     wait(20,msec);
   }

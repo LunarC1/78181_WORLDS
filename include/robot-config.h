@@ -22,11 +22,11 @@ extern digital_out back_wings2;
 
 extern limit limitselect;
 
-extern distance balance;
+// extern distance balance;
 
-extern distance recoil;
+// extern distance recoil;
 
-extern optical placement;
+// extern optical placement;
 
 extern rotation hangrot;
 // VEXcode devices

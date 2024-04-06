@@ -11,11 +11,11 @@ controller Controller1 = controller(primary);
 motor LF = motor(PORT4, ratio6_1, true);
 motor LM = motor(PORT5, ratio6_1, true);
 motor LB = motor(PORT6, ratio6_1, true);
-motor RF = motor(PORT1, ratio6_1, false);
-motor RM = motor(PORT2, ratio6_1, false);
-motor RB = motor(PORT3, ratio6_1, false);
+motor RF = motor(PORT11, ratio6_1, false);
+motor RM = motor(PORT12, ratio6_1, false);
+motor RB = motor(PORT13, ratio6_1, false);
 
-inertial Inertial100 = inertial(PORT12);
+inertial Inertial100 = inertial(PORT14);
 
 digital_out front_wings = digital_out(Brain.ThreeWirePort.B);
 digital_out front_wings2 = digital_out(Brain.ThreeWirePort.C);
@@ -28,15 +28,15 @@ limit limitselect = limit(Brain.ThreeWirePort.G);
 motor intakeMotor = motor(PORT8, ratio18_1, false);
 
 motor cataMotor = motor(PORT9, ratio18_1, false);
-motor kicker = motor(PORT19, ratio18_1, true);
+motor kicker = motor(PORT1, ratio18_1, true);
 
 rotation hangrot = rotation(PORT10, false);
 
-distance balance = distance(PORT21);
+// distance balance = distance(PORT19);
 
-distance recoil = distance(PORT17);
+// distance recoil = distance(PORT17);
 
-optical placement = optical(PORT18);
+// optical placement = optical(PORT18);
 // VEXcode device constructors
 
 // VEXcode generated functions
