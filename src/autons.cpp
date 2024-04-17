@@ -153,24 +153,26 @@ void Safesix(){
   back_wings.set(true);
   chassis.diff(-70,-30,1700,620);
   // chassis.set_heading(0);
-  chassis.drive_distance(8);
-  chassis.turn_to_angle(192);
+  chassis.drive_distance(9);
+  chassis.turn_to_angle(201);
   intakeMotor.spin(fwd,-100,pct);
   chassis.DriveL.spin(fwd, 9, volt);
-  chassis.DriveR.spin(fwd, 9, volt);
+  chassis.DriveR.spin(fwd, 9.1, volt);
   wait(450,msec);
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);
-  chassis.drive_distance(-4);
-  chassis.diff(-15,-60,400,200);
+  chassis.turn_to_angle(225);
+  chassis.drive_distance(-7);
+  // chassis.diff(-15,-60,400,200);
   // chassis.drive_distance(9);
-  chassis.turn_to_angle(103);
+  chassis.turn_to_angle(109);
+  wait(200,msec);
 
   intakeMotor.spin(forward,100,pct);
 
   chassis.set_drive_exit_conditions(0.8, 3, 1150);
   chassis.set_turn_exit_conditions(1.1, 2, 700);
-  chassis.drive_distance(52);
+  chassis.drive_distance(46);
   wait(200,msec);
   chassis.turn_to_angle(235);
   chassis.set_drive_exit_conditions(1, 3, 265);
@@ -180,7 +182,7 @@ void Safesix(){
   intakeMotor.spin(forward,100,pct);
   chassis.set_drive_exit_conditions(0.4, 3, 1150);
   chassis.turn_to_angle(157);
-  chassis.drive_distance(15);
+  chassis.drive_distance(19);
   wait(100,msec);
 
   chassis.turn_to_angle(263);

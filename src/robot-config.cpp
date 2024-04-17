@@ -11,11 +11,11 @@ controller Controller1 = controller(primary);
 motor LF = motor(PORT4, ratio6_1, true);
 motor LM = motor(PORT5, ratio6_1, true);
 motor LB = motor(PORT6, ratio6_1, true);
-motor RF = motor(PORT15, ratio6_1, false);
-motor RM = motor(PORT16, ratio6_1, false);
-motor RB = motor(PORT13, ratio6_1, false);
+motor RF = motor(PORT1, ratio6_1, false);
+motor RM = motor(PORT2, ratio6_1, false);
+motor RB = motor(PORT3, ratio6_1, false);
 
-inertial Inertial100 = inertial(PORT14);
+inertial Inertial100 = inertial(PORT7);
 
 digital_out front_wings = digital_out(Brain.ThreeWirePort.B);
 digital_out front_wings2 = digital_out(Brain.ThreeWirePort.C);
