@@ -222,10 +222,12 @@ void RushNoRamAWP(){
   wait(100,msec);
   back_wings.set(false);
   chassis.turn_to_angle(315);
-  chassis.drive_distance(19);
-  chassis.right_swing_to_angle(270);
+  chassis.drive_distance(15);
+  chassis.turn_to_angle(270);
   front_wings2.set(true);
-  chassis.drive_distance(23);
+  chassis.drive_distance(10);
+  intakeMotor.spin(fwd,-100,pct);
+
   // // chassis.left_swing_to_angle(180);
   // chassis.DriveL.spin(fwd, -7, volt);
   // chassis.DriveR.spin(fwd, -7, volt);
@@ -551,8 +553,8 @@ void Worlds_Skills(){
   chassis.turn_to_angle(73);
   chassis.drive_distance(-4);
   back_wings2.set(true);
-  kicker.spin(forward,70,pct);
-  wait(3,sec);
+  kicker.spin(forward,72,pct);
+  wait(22,sec);
   kicker.stop(coast);
   back_wings2.set(false);
   chassis.set_drive_exit_conditions(0.5, 20, 2400);
@@ -641,7 +643,9 @@ void Worlds_Skills(){
   // chassis.turn_to_angle(221);
   // chassis.ram(1450,-9.5,-9.5);
   chassis.reramB();
+  chassis.turn_to_angle(190);
   chassis.reramB();
+  chassis.turn_to_angle(190);
   chassis.reramB();
   chassis.drive_distance(7);
   

@@ -6,13 +6,15 @@ int UC_Intake(){
     if(Controller1.ButtonL1.pressing() && Controller1.ButtonR1.pressing()){
       back_wings.set(true);
       back_wings2.set(true);
+      intakeMotor.spin(fwd,0,pct);
     }
-    if(Controller1.ButtonL1.pressing()){
+    if(Controller1.ButtonR1.pressing()){
+      intakeMotor.spin(forward,(-100)*120,voltageUnits::mV);
+    }
+    else if(Controller1.ButtonL1.pressing()){
       intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
     }
-    else if(Controller1.ButtonR1.pressing()){
-      intakeMotor.spin(reverse,(100)*120,voltageUnits::mV);
-    }
+    
     else{
       intakeMotor.stop(hold);
       back_wings.set(false);
@@ -36,7 +38,7 @@ int UC_Slapper(){
       waitUntil(Controller1.ButtonRight.pressing() == false);
       kick_io=!kick_io;
     }
-    if(kick_io == true) kicker.spin(forward,69,percent);
+    if(kick_io == true) kicker.spin(forward,75,percent);
     else kicker.stop(coast);
     wait(20,msec);
   }

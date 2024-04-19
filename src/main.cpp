@@ -678,7 +678,7 @@ void usercontrol(void) {
       chassis.diff(-45, -80, 1700, 300);
       chassis.set_heading(180);
       chassis.drive_distance(10);
-      chassis.turn_to_angle(73);
+      chassis.turn_to_angle(69.5);
       chassis.drive_distance(-4);
       back_wings2.set(true);
 
