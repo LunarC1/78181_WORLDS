@@ -424,10 +424,6 @@ void Drive::diffram(double veloleft, double veloright, double timeout = 4000, do
 
 // }
 
-// void Drive::stanley(float lookahead, float steerangle){
-//   float error = (theta - Inertial100.heading());
-// }
-
 void Drive::cross(double timeout = 5000){
   // int timer = vex::timer();
   chassis.DriveL.spin(fwd, 70, volt);

@@ -4,7 +4,6 @@ using namespace vex;
 using signature = vision::signature;
 using code = vision::code;
 
-// A global instance of brain used for printing to the V5 Brain screen
 brain Brain;
 controller Controller1 = controller(primary);
 
@@ -14,6 +13,12 @@ motor LB = motor(PORT6, ratio6_1, true);
 motor RF = motor(PORT1, ratio6_1, false);
 motor RM = motor(PORT2, ratio6_1, false);
 motor RB = motor(PORT3, ratio6_1, false);
+
+motor intakeMotor = motor(PORT8, ratio6_1, false);
+motor cataMotor = motor(PORT9, ratio36_1, false);
+motor kicker = motor(PORT19, ratio36_1, true);
+
+rotation hangrot = rotation(PORT10, false);
 
 inertial Inertial100 = inertial(PORT7);
 
@@ -25,17 +30,4 @@ digital_out back_wings2 = digital_out(Brain.ThreeWirePort.E);
 
 limit limitselect = limit(Brain.ThreeWirePort.G);
 
-motor intakeMotor = motor(PORT8, ratio6_1, false);
-
-motor cataMotor = motor(PORT9, ratio36_1, false);
-motor kicker = motor(PORT19, ratio36_1, true);
-
-rotation hangrot = rotation(PORT10, false);
-/**
- * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
- * 
- * This should be called at the start of your int main function.
- */
-void vexcodeInit( void ) {
-  // nothing to initialize
-}
+void vexcodeInit( void ) {}
