@@ -66,9 +66,14 @@ PORT3,     -PORT4,
 
 );
 
+int current_auton_selection = 0;
+bool auto_started = false;
+int autonState = 0; 
+
 void debug_menu(int selection){
   bool debug_is_pressed = false;
   while(1){
+    // selection = autonState;
     if(debug_is_pressed == false){
       Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
       Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
@@ -77,12 +82,6 @@ void debug_menu(int selection){
       Brain.Screen.drawLine(310,0,310,240); 
       Brain.Screen.drawLine(310,70,480,70); 
       Brain.Screen.setFillColor(black); 
-      if(selection == 0) Brain.Screen.printAt(350, 43, "AWP");
-      else if(selection == 1) Brain.Screen.printAt(350, 43, "Safe Six");
-      else if(selection == 2) Brain.Screen.printAt(350, 43, "Steal AWP");
-      else if(selection == 3) Brain.Screen.printAt(350, 43, "Sixball");
-      else if(selection == 4) Brain.Screen.printAt(350, 43, "Safe Five");
-      else if(selection == 5) Brain.Screen.printAt(350, 43, "Skills");
       Brain.Screen.setFont(mono40);
       Brain.Screen.setFillColor(blue);
       Brain.Screen.drawRectangle(310,70,170,210);
@@ -107,13 +106,13 @@ void debug_menu(int selection){
       Brain.Screen.printAt(270, 140, "Intake Temp:%f",std::floor(intakeMotor.temperature(percent)));
       Brain.Screen.printAt(270, 190, "Kicker Temp:%f",std::floor(kicker.temperature(percent)));
     }
+    if(limitselect.pressing()){
+      waitUntil(limitselect.pressing());
+      break;
+    }
     wait(20,msec);
   }
 }
-
-int current_auton_selection = 0;
-bool auto_started = false;
-int autonState = 0; 
 
 void pre_auton(void) {
   vexcodeInit();
@@ -128,24 +127,52 @@ void pre_auton(void) {
   while(1) {
     switch(autonState) {
       case 0:
+        Brain.Screen.setPenWidth(4);
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "AWP");
         debug_menu(0);
         break; 
       case 1:
+        Brain.Screen.setPenWidth(4);
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "Safe Six");
         debug_menu(1);
         break; 
       case 2:
+        Brain.Screen.setPenWidth(4);
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "Steal AWP");
         debug_menu(2);
         break; 
       case 3:
+        Brain.Screen.setPenWidth(4);
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "Sixball");
         debug_menu(3);
         break; 
       case 4:
+        Brain.Screen.setPenWidth(4); 
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "Safe Five");
         debug_menu(4);
         break; 
       case 5:
+        Brain.Screen.setPenWidth(4); 
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "Skills");
         debug_menu(5);
         break;
       default:
+        Brain.Screen.setPenWidth(4); 
+        Brain.Screen.setFont(monoL);
+        Brain.Screen.setFillColor(black); 
+        Brain.Screen.printAt(350, 43, "AWP");
         debug_menu(0);
         break;
     }
@@ -154,7 +181,7 @@ void pre_auton(void) {
       Brain.Screen.clearScreen();
       autonState++; 
     }
-    else if(autonState>4) autonState = 0; 
+    if(autonState>4) autonState = 0; 
   }
 }
 
