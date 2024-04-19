@@ -3,36 +3,13 @@
 
 void default_constants(){
   chassis.set_drive_constants(12, 1, 0, 0.5, 0);
-  // chassis.set_turn_constants(12, 0.35, 0, 0.8, 0);//0.33
   chassis.set_turn_constants(12, 0.35, .05, 2, 10);
   chassis.set_swing_constants(12, 2, 0.1, 0, 5);
   chassis.set_diff_constants(12, .137, 0.001, 0, 0);
-  chassis.set_drive_exit_conditions(0.1, 20, 2000);//2000
-  chassis.set_turn_exit_conditions(0.1, 20, 3000);//900
+  chassis.set_drive_exit_conditions(0.1, 20, 2000);
+  chassis.set_turn_exit_conditions(0.1, 20, 3000);
   chassis.set_swing_exit_conditions(0.1, 20, 1500);
   chassis.set_diff_exit_conditions(1, 10, 900);
-
-  // chassis.set_drive_constants(12, 0.79, 0, 0.83, 0);
-  // // chassis.set_turn_constants(12, 0.35, 0, 0.8, 0);//0.33
-  // chassis.set_turn_constants(12, 0.2, .01, 0.81, 15);
-  // chassis.set_swing_constants(12, 0, 0, 0, 0);
-  // chassis.set_diff_constants(12, .137, 0.001, 0, 0);
-  // chassis.set_drive_exit_conditions(0.1, 0, 2000);//2000
-  // chassis.set_turn_exit_conditions(0.45, 5, 3000);//900
-  // chassis.set_swing_exit_conditions(0, 1000, 1500);
-  // chassis.set_diff_exit_conditions(1, 10, 900);
-
-  // chassis.set_drive_constants(10, 0.53, 0, 1.23, 0);
-  // chassis.set_turn_constants(12, .325, .01, 1.45, 15);
-  
-  // chassis.set_swing_constants(12, .14, 0.001, 0.013, 0);
-  // chassis.set_diff_constants(12, .137, 0.001, 0.01, 0);
-  // // chassis.set_swing_constants(12, .1285, 0.001, 0.3, 15);
-  // // chassis.set_swing_constants(12, .3, .001, 2, 15);
-  // chassis.set_drive_exit_conditions(1, 10, 2000);
-  // chassis.set_turn_exit_conditions(0.7, 10, 900);  
-  // chassis.set_swing_exit_conditions(1, 10, 1500);
-  // chassis.set_diff_exit_conditions(1, 10, 900);
 }
 
 
@@ -43,31 +20,19 @@ void odom_constants(){
 }
 
 void fiveballtouch(){
-  // chassis.set_heading(270);
-  // chassis.drive_distance(-15);
-  // chassis.diff(-70,-37,1150,200);
   chassis.drive_max_voltage = 11.2;
   chassis.set_drive_exit_conditions(0.5, 3, 1000);
   chassis.set_turn_exit_conditions(1.1, 3, 900);
   intakeMotor.setStopping(hold);
-  chassis.set_heading(45); //idk
-  // chassis.set_coordinates(-36, 59, 162);
+  chassis.set_heading(45);
   intakeMotor.spin(forward,100,pct);
   back_wings.set(true);
-  // wait(130,msec);
-  // back_wings.set(false);
   chassis.diff(-55,-25,1300,400);
-  // chassis.reramB();
-
   chassis.turn_to_angle(45);
   chassis.drive_distance(7);
-  // chassis.diff(-15,-60,400,200);
-  // chassis.drive_distance(9);
   chassis.turn_to_angle(111);
   wait(200,msec);
-
   intakeMotor.spin(forward,100,pct);
-
   chassis.set_drive_exit_conditions(0.8, 3, 1150);
   chassis.set_turn_exit_conditions(1.1, 2, 700);
   chassis.drive_distance(46);
@@ -76,15 +41,13 @@ void fiveballtouch(){
   chassis.set_drive_exit_conditions(1, 3, 265);
   intakeMotor.spin(reverse,100,pct);
   chassis.drive_distance(3);
-  wait(200,msec);//300
+  wait(200,msec);
   intakeMotor.spin(forward,100,pct);
   chassis.set_drive_exit_conditions(0.4, 3, 1150);
   chassis.turn_to_angle(157);
   chassis.drive_distance(18);
   wait(100,msec);
-
   chassis.turn_to_angle(264);
-
   front_wings.set(true);
   front_wings2.set(true);
   intakeMotor.spin(reverse,100,percent);

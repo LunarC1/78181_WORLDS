@@ -25,24 +25,12 @@ digital_out back_wings2 = digital_out(Brain.ThreeWirePort.E);
 
 limit limitselect = limit(Brain.ThreeWirePort.G);
 
-motor intakeMotor = motor(PORT8, ratio18_1, false);
+motor intakeMotor = motor(PORT8, ratio6_1, false);
 
-motor cataMotor = motor(PORT9, ratio18_1, false);
-motor kicker = motor(PORT19, ratio18_1, true);
+motor cataMotor = motor(PORT9, ratio36_1, false);
+motor kicker = motor(PORT19, ratio36_1, true);
 
 rotation hangrot = rotation(PORT10, false);
-
-// distance balance = distance(PORT19);
-
-// distance recoil = distance(PORT17);
-
-// optical placement = optical(PORT18);
-// VEXcode device constructors
-
-// VEXcode generated functions
-
-
-
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  * 
