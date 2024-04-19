@@ -374,7 +374,7 @@ void Drive::reramF(){
   // float angle = Inertial100.heading();
   chassis.DriveL.spin(fwd, -6, volt);
   chassis.DriveR.spin(fwd, -6, volt);
-  wait(550,msec);
+  wait(450,msec);
   // chassis.turn_to_angle(175);
   chassis.DriveL.spin(fwd, 9, volt);
   chassis.DriveR.spin(fwd, 9, volt);
@@ -385,10 +385,10 @@ void Drive::reramF(){
 void Drive::reramB(){
   chassis.DriveL.spin(fwd, 6, volt);
   chassis.DriveR.spin(fwd, 6, volt);
-  wait(550,msec);
+  wait(750,msec);
   chassis.DriveL.spin(fwd, -9, volt);
   chassis.DriveR.spin(fwd, -9, volt);
-  wait(450,msec);
+  wait(1000,msec);
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);
 }

@@ -547,13 +547,16 @@ void autonomous(void) {
   // auto_started = true;
     switch(autonState){  
       case 0:
-        // Worlds_Skills();
+        // testing();
+        Worlds_Skills();
         // ramAWP2();
-        sixball();
+        // sixball();
+        // FarAWP();
         // Safesix();
         // testing();
         // RushAWP2();
         // PID_Test();
+        // RushNoRamAWP();
         // skills3(); //This is the default auton, if you don't select from the brain.
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
@@ -562,7 +565,7 @@ void autonomous(void) {
         break;
       case 2:
         Safesix();
-        break;
+        break;  
       case 3:
         sixball_safe();
         break;
@@ -666,16 +669,18 @@ void usercontrol(void) {
     // printf("Position:%f",hangrot.position(rotationUnits::rev));
     chassis.control_arcade();
     if(Controller1.ButtonY.pressing()){
+      chassis.drive_max_voltage = 11.2;
+      chassis.set_drive_exit_conditions(0.5, 20, 1000);
+      chassis.set_turn_exit_conditions(0.4, 20, 900);
       back_wings.set(true);
-      chassis.set_drive_exit_conditions(0.3, 10, 600);
-      // chassis.set_swing_exit_conditions(1.2, 10, 1300);
-      chassis.diff(-45, -80, 1700, 300);
+      wait(120,msec);
       back_wings.set(false);
+      chassis.diff(-45, -80, 1700, 300);
       chassis.set_heading(180);
-      chassis.diff(40,70,400,400);
-      // chassis.drive_distance(11);
-      chassis.turn_to_angle(72);
-      chassis.drive_distance(-6);
+      chassis.drive_distance(10);
+      chassis.turn_to_angle(73);
+      chassis.drive_distance(-4);
+      back_wings2.set(true);
 
       // chassis.set_drive_exit_conditions(0.3, 10, 600);
       // chassis.set_swing_exit_conditions(1.2, 10, 1300);

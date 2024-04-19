@@ -17,6 +17,8 @@ void AWP_ram();
 void sixball();
 void Safesix();
 void RushAWP();
+void RushNoRamAWP();
+void FarAWP();
 void sixball_safe();
 void odom_test();
 void skills1();
