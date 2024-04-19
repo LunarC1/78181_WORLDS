@@ -28,6 +28,6 @@ digital_out pistonratchet = digital_out(Brain.ThreeWirePort.A);
 digital_out back_wings = digital_out(Brain.ThreeWirePort.D);
 digital_out back_wings2 = digital_out(Brain.ThreeWirePort.E);
 
-limit limitselect = limit(Brain.ThreeWirePort.G);
+limit limitselect = limit(Brain.ThreeWirePort.F);
 
 void vexcodeInit( void ) {}
