@@ -181,7 +181,7 @@ void pre_auton(void) {
       Brain.Screen.clearScreen();
       autonState++; 
     }
-    if(autonState>4) autonState = 0; 
+    if(autonState>5) autonState = 0; 
   }
 }
 

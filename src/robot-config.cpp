@@ -24,7 +24,7 @@ inertial Inertial100 = inertial(PORT7);
 
 digital_out front_wings = digital_out(Brain.ThreeWirePort.B);
 digital_out front_wings2 = digital_out(Brain.ThreeWirePort.C);
-digital_out pistonratchet = digital_out(Brain.ThreeWirePort.A);
+digital_out pistonratchet = digital_out(Brain.ThreeWirePort.G);
 digital_out back_wings = digital_out(Brain.ThreeWirePort.D);
 digital_out back_wings2 = digital_out(Brain.ThreeWirePort.E);
 
