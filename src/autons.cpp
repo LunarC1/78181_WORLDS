@@ -42,7 +42,7 @@ void odom_constants(){
   chassis.drive_settle_error = 3;
 }
 
-void FarAWP(){
+void fiveballtouch(){
   // chassis.set_heading(270);
   // chassis.drive_distance(-15);
   // chassis.diff(-70,-37,1150,200);
@@ -148,7 +148,10 @@ void noramAWP(){
 }
 
 void noramAWP2(){
-  chassis.drive_max_voltage = 11;
+  chassis.drive_max_voltage = 11.2;
+  chassis.set_drive_exit_conditions(0.5, 3, 1000);
+  chassis.set_turn_exit_conditions(1.1, 3, 900);
+  // chassis.drive_max_voltage = 11;
   chassis.set_heading(135);
   intakeMotor.spin(forward,-100,percent);
   chassis.drive_distance(10);

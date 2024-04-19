@@ -235,11 +235,12 @@ void debug_menu(int c){
       Brain.Screen.drawLine(310,70,480,70); 
       Brain.Screen.setFillColor(black); 
       if(c == 0) Brain.Screen.printAt(350, 43, "AWP");
-      else if(c == 1) Brain.Screen.printAt(350, 43, "Sixball");
+      else if(c == 1) Brain.Screen.printAt(350, 43, "Safe Six");
       else if(c == 2) Brain.Screen.printAt(350, 43, "Steal AWP");
-      else if(c == 3) Brain.Screen.printAt(350, 43, "Safe Six");
-      else if(c == 4) Brain.Screen.printAt(350, 43, "Rush Five");
+      else if(c == 3) Brain.Screen.printAt(350, 43, "Sixball");
+      else if(c == 4) Brain.Screen.printAt(350, 43, "Safe Five");
       else if(c == 5) Brain.Screen.printAt(350, 43, "Skills");
+      // else if(c == 5) Brain.Screen.printAt(350, 43, "Skills");
       Brain.Screen.setFont(mono40);
       Brain.Screen.setFillColor(blue);
       Brain.Screen.drawRectangle(310,70,170,210);
@@ -313,9 +314,9 @@ void pre_auton(void) {
   // bool limitval = false;
   Brain.Screen.clearScreen();
   while(1){
-    if(Brain.Battery.capacity() > 50 && Brain.Battery.capacity() < 100){
-      wait(10,msec);
-    }
+    // if(Brain.Battery.capacity() > 50 && Brain.Battery.capacity() < 100){
+    //   wait(10,msec);
+    // }
 
 //     while(auto_started == false){            //Changing the names below will only change their names on the
 //       // Brain.Screen.clearScreen();            //brain screen for auton selection.
@@ -525,7 +526,7 @@ void pre_auton(void) {
       Brain.Screen.clearScreen();
       autonState++; 
     }
-    else if(autonState>5){
+    else if(autonState>4){
       autonState = 0; 
     }
   }
@@ -548,10 +549,11 @@ void autonomous(void) {
     switch(autonState){  
       case 0:
         // testing();
-        Worlds_Skills();
+        // Worlds_Skills();
         // ramAWP2();
+        noramAWP2();
         // sixball();
-        // FarAWP();
+        
         // Safesix();
         // testing();
         // RushAWP2();
@@ -561,19 +563,20 @@ void autonomous(void) {
         break;        //Change these to be your own auton functions in order to use the auton selector.
       case 1:         //Tap the screen to cycle through autons.
         // noramAWP2();
-        sixball();
+        Safesix();
         break;
       case 2:
-        Safesix();
+        RushNoRamAWP();
         break;  
       case 3:
-        sixball_safe();
-        break;
-      case 4:
         sixball();
         break;
+      case 4:
+        // sixball();
+        fiveballtouch();
+        break;
       case 5:
-        skills4();
+        Worlds_Skills();
         break;
   }
   // switch(autonState){
