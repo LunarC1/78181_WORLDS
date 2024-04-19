@@ -6,7 +6,6 @@
 #include "autofunctions.hpp"
 #include <cmath>
 #include <iomanip>
-// #include <string>
 using namespace vex;
 competition Competition;
 
@@ -179,36 +178,35 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-    switch(autonState){  
-      case 0:
-        // testing();
-        // ramAWP2();
-        noramAWP2();
-        // sixball();
-        // Safesix();
-        // RushNoRamAWP();
-        // Worlds_Skills();
-        break;
-      case 1:
-        Safesix();
-        break;
-      case 2:
-        RushNoRamAWP();
-        break;  
-      case 3:
-        sixball();
-        break;
-      case 4:
-        fiveballtouch();
-        break;
-      case 5:
-        Worlds_Skills();
-        break;
-      default:
-        noramAWP2();
-        break;
+  switch(autonState){  
+    case 0:
+      // testing();
+      // ramAWP2();
+      noramAWP2();
+      // sixball();
+      // Safesix();
+      // RushNoRamAWP();
+      // Worlds_Skills();
+      break;
+    case 1:
+      Safesix();
+      break;
+    case 2:
+      RushNoRamAWP();
+      break;  
+    case 3:
+      sixball();
+      break;
+    case 4:
+      fiveballtouch();
+      break;
+    case 5:
+      Worlds_Skills();
+      break;
+    default:
+      noramAWP2();
+      break;
   }
-
 }
 
 void usercontrol(void) {

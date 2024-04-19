@@ -60,15 +60,21 @@ int horvert(){
   double hangpos;
   bool ver_is_pressed = false;
   bool hor_is_pressed = false;
-  float timeout = 10000;
-  hangrot.resetPosition(); 
+  double startTimeA;
+  float break_condition1 = 10000;
+  float break_condition2 = 15000;
+  Brain.Timer.clear();
+  startTimeA = Brain.timer(sec);
+  hangrot.resetPosition();
   while(1){
     hangpos = std::abs(hangrot.position(rotationUnits::rev));
+    startTimeA = Brain.timer(msec);
     if(Controller1.ButtonA.pressing() && hor_is_pressed == false){ //Click once, set ratchet to false, lift up
       while(hangpos <= 1.15){
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         cataMotor.spin(forward,-100,pct);
         wait(20,msec);
+        if(startTimeA >= break_condition1) break;
       }
       cataMotor.stop(hold);
       hor_is_pressed = true;
@@ -78,6 +84,7 @@ int horvert(){
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         cataMotor.spin(forward,100,pct);
         wait(20,msec);
+        if(startTimeA >= break_condition2) break;
       }
       cataMotor.stop(hold);
     }
@@ -87,6 +94,7 @@ int horvert(){
         cataMotor.spin(forward,-100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         wait(20,msec);
+        if(startTimeA >= break_condition1) break;
       }
       cataMotor.stop(hold);
       ver_is_pressed = true;
@@ -96,6 +104,7 @@ int horvert(){
         cataMotor.spin(forward,100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         wait(20,msec);
+        if(startTimeA >= break_condition2) break;
       }
       cataMotor.stop(hold);
     }
