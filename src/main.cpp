@@ -6,6 +6,8 @@
 #include "autofunctions.hpp"
 #include <cmath>
 #include <iomanip>
+#include "sensorcheck.h"
+
 using namespace vex;
 competition Competition;
 
@@ -191,25 +193,30 @@ void autonomous(void) {
       // testing();
       // ramAWP2();
       noramAWP2();
+      // Worlds_Skills();
       // sixball();
       // Safesix();
       // RushNoRamAWP();
       // Worlds_Skills();
       break;
     case 1:
+    // noramAWP2();
       Safesix();
       break;
     case 2:
+      // Safesix();
       RushNoRamAWP();
       break;  
     case 3:
+      // RushNoRamAWP();
       sixball();
       break;
     case 4:
+      // sixball();
       fiveballtouch();
       break;
     case 5:
-      Worlds_Skills();
+      // fiveballtouch();
       break;
     default:
       noramAWP2();
@@ -223,9 +230,17 @@ void usercontrol(void) {
   task Releasetask(UC_frontwings);
   task Ratchettask(pistonratchett);
   task verhormac(horvert);
-
+  checkBattery();
+  checkMotor(intakeMotor);
+  checkMotor(LF);
+  checkMotor(LM);
+  checkMotor(LB);
+  checkMotor(RF);
+  checkMotor(RM);
+  checkMotor(RB);
   while(1){
     chassis.control_arcade();
+
     if(Controller1.ButtonY.pressing() && autonState == 5){
       chassis.drive_max_voltage = 11.2;
       chassis.set_drive_exit_conditions(0.5, 20, 1000);
@@ -236,11 +251,11 @@ void usercontrol(void) {
       chassis.diff(-45, -80, 1700, 300);
       chassis.set_heading(180);
       chassis.drive_distance(10);
-      chassis.turn_to_angle(69.5);
+      chassis.turn_to_angle(70.2);
       chassis.drive_distance(-4);
       back_wings2.set(true);
     }
-    wait(20, msec);
+    wait(20,msec);
   }
 }
 

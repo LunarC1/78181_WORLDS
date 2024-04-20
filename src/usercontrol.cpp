@@ -31,7 +31,7 @@ int UC_Slapper(){
       waitUntil(Controller1.ButtonRight.pressing() == false);
       kick_io=!kick_io;
     }
-    if(kick_io == true) kicker.spin(forward,75,percent);
+    if(kick_io == true) kicker.spin(forward,70,percent);
     else kicker.stop(coast);
     wait(20,msec);
   }
@@ -90,7 +90,7 @@ int horvert(){
     }
 
     if(Controller1.ButtonB.pressing() && ver_is_pressed == false){ //Click once, set ratchet to false, lift up
-      while(hangpos <= 3.8){
+      while(hangpos <= 3.45){
         cataMotor.spin(forward,-100,pct);
         hangpos = std::abs(hangrot.position(rotationUnits::rev));
         wait(20,msec);

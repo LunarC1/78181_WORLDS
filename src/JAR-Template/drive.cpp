@@ -392,6 +392,16 @@ void Drive::reramB(){
   chassis.DriveL.spin(fwd,0,volt);
   chassis.DriveR.spin(fwd,0,volt);
 }
+void Drive::reramB2(int timeout1, int timeout2){
+  chassis.DriveL.spin(fwd, 6, volt);
+  chassis.DriveR.spin(fwd, 6, volt);
+  wait(timeout1,msec);
+  chassis.DriveL.spin(fwd, -9, volt);
+  chassis.DriveR.spin(fwd, -9, volt);
+  wait(timeout2,msec);
+  chassis.DriveL.spin(fwd,0,volt);
+  chassis.DriveR.spin(fwd,0,volt);
+}
 void Drive::diffram(double veloleft, double veloright, double timeout = 4000, double wingtimeout = 300){
   chassis.DriveL.spin(fwd, to_volt(veloleft), volt);
   chassis.DriveR.spin(fwd, to_volt(veloright), volt);

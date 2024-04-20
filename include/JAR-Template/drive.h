@@ -140,6 +140,7 @@ public:
   void diffram(double veloleft, double veloright, double timeout, double wingtimeout);
   void reramF();
   void reramB();
+  void reramB2(int timeout1, int timeout2);
   // void moveToPose(float x, float y, float theta, double dleadint, int timeout, bool direction);
 
   void cross(double timeout);
