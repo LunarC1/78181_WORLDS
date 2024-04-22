@@ -192,9 +192,9 @@ void autonomous(void) {
     case 0:
       // testing();
       // ramAWP2();
-      // noramAWP2();
+      noramAWP2();
       // Worlds_Skills();
-      sixball();
+      // sixball();
       // Safesix();
       // RushNoRamAWP();
       // PID_Test();
@@ -219,6 +219,7 @@ void autonomous(void) {
       break;
     case 5:
       // fiveballtouch();
+      Worlds_Skills();
       break;
     default:
       noramAWP2();

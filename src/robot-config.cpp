@@ -16,7 +16,7 @@ motor RB = motor(PORT3, ratio6_1, false);
 
 motor intakeMotor = motor(PORT8, ratio6_1, false);
 motor cataMotor = motor(PORT9, ratio36_1, false);
-motor kicker = motor(PORT19, ratio36_1, true);
+motor kicker = motor(PORT19, ratio36_1, true); 
 
 rotation hangrot = rotation(PORT10, false);
 

@@ -444,9 +444,9 @@ void sixball(){
   intakeMotor.spin(reverse,100,pct);
   wait(300,msec);
   intakeMotor.spin(forward,100,pct);
-  chassis.turn_to_angle(90.1);
-  wait(200,msec);
-  chassis.drive_distance(36);
+  chassis.turn_to_angle(88.7);
+  wait(500,msec);
+  chassis.drive_distance(35.3);//gets triball under horizontal bar
   // chassis.set_heading(89);
   wait(100,msec);
   chassis.set_drive_exit_conditions(0.5, 3, 600);
@@ -458,9 +458,9 @@ void sixball(){
   wait(150,msec);
   chassis.turn_to_angle(70.5);
   back_wings.set(true);
-  // back_wings2.set(true);
-  chassis.diffram(-70,-33,1700,540);
-  chassis.reramB2(450,650);
+  chassis.drive_distance(-21);
+  chassis.diff(-50,-25,1700,600);//first varaible used to be -70
+  // chassis.reramB2(450,650);
   // back_wings2.set(false);
   
 
@@ -630,7 +630,7 @@ void Worlds_Skills(){
   chassis.turn_to_angle(68.8);
   chassis.drive_distance(-4);
   back_wings2.set(true);
-  kicker.spin(forward,70,pct);
+  kicker.spin(forward,74,pct);
   wait(22,sec);
   kicker.stop(coast);
   back_wings2.set(false);
