@@ -192,12 +192,14 @@ void autonomous(void) {
     case 0:
       // testing();
       // ramAWP2();
-      noramAWP2();
+      // noramAWP2();
       // Worlds_Skills();
-      // sixball();
+      sixball();
       // Safesix();
       // RushNoRamAWP();
+      // PID_Test();
       // Worlds_Skills();
+      // sixdisrupt();
       break;
     case 1:
     // noramAWP2();
@@ -238,6 +240,7 @@ void usercontrol(void) {
   checkMotor(RF);
   checkMotor(RM);
   checkMotor(RB);
+  // back_wings.set(true);
   while(1){
     chassis.control_arcade();
 
@@ -255,6 +258,16 @@ void usercontrol(void) {
       chassis.drive_distance(-4);
       back_wings2.set(true);
     }
+    // if(Controller1.ButtonRight.pressing()){
+    //   // chassis.drive_max_voltage = 11.2;
+    //   // chassis.set_drive_exit_conditions(0.5, 3, 1000);
+    //   // chassis.set_turn_exit_conditions(1.1, 3, 900);
+    //   // intakeMotor.setStopping(hold);
+    //   // chassis.set_heading(45);
+    //   // intakeMotor.spin(forward,100,pct);
+      
+      
+    // }
     wait(20,msec);
   }
 }

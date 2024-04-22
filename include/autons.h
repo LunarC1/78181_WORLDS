@@ -7,6 +7,7 @@ extern Drive chassis;
 void default_constants();
 
 void PID_Test();
+void sixdisrupt();
 void noramAWP();
 void noramAWP2();
 void RushAWP2();

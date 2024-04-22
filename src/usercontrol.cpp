@@ -14,6 +14,13 @@ int UC_Intake(){
     else if(Controller1.ButtonL1.pressing()){
       intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
     }
+    else if(Controller1.ButtonLeft.pressing()){
+      intakeMotor.spin(forward,-(100)*120,voltageUnits::mV);
+      wait(260,msec);
+      intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
+      wait(300,msec);
+      intakeMotor.stop(hold);
+    }
     
     else{
       intakeMotor.stop(hold);
