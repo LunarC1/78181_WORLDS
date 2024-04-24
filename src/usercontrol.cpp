@@ -8,20 +8,15 @@ int UC_Intake(){
       back_wings2.set(true);
       intakeMotor.spin(fwd,0,pct);
     }
-    if(Controller1.ButtonR1.pressing()){
-      intakeMotor.spin(forward,(-100)*120,voltageUnits::mV);
-    }
-    else if(Controller1.ButtonL1.pressing()){
-      intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
-    }
-    else if(Controller1.ButtonLeft.pressing()){
-      intakeMotor.spin(forward,-(100)*120,voltageUnits::mV);
-      wait(260,msec);
-      intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
-      wait(300,msec);
-      intakeMotor.stop(hold);
-    }
-    
+    else if(Controller1.ButtonR1.pressing()) intakeMotor.spin(forward,(-100)*120,voltageUnits::mV);
+    else if(Controller1.ButtonL1.pressing()) intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
+    // else if(Controller1.ButtonLeft.pressing()){
+    //   intakeMotor.spin(forward,-(100)*120,voltageUnits::mV);
+    //   wait(260,msec);
+    //   intakeMotor.spin(forward,(100)*120,voltageUnits::mV);
+    //   wait(300,msec);
+    //   intakeMotor.stop(hold);
+    // }
     else{
       intakeMotor.stop(hold);
       back_wings.set(false);
@@ -50,12 +45,8 @@ int UC_frontwings(){
       front_wings.set(true);
       front_wings2.set(true);
     }
-    if(Controller1.ButtonL2.pressing()){
-      front_wings.set(true);
-    }
-    else if(Controller1.ButtonR2.pressing()){
-      front_wings2.set(true);
-    }
+    if(Controller1.ButtonL2.pressing()) front_wings.set(true);
+    else if(Controller1.ButtonR2.pressing()) front_wings2.set(true);
     else{
       front_wings.set(false);
       front_wings2.set(false);
@@ -124,7 +115,7 @@ int horvert(){
     }
     else cataMotor.stop(hold);
   }
-    wait(20,msec);
+  wait(20,msec);
 }
 
 int pistonratchett(){
@@ -135,7 +126,7 @@ int pistonratchett(){
       ratchet =!ratchet;
       if(ratchet == true){
         Controller1.Screen.clearScreen();
-      Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.setCursor(1,1);
         Controller1.Screen.print("Ratchet Engaged");
       }
       else if(ratchet == false){

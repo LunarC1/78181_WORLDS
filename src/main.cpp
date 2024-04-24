@@ -3,7 +3,7 @@
 #include "vexfield.h"
 #include "logo.h"
 #include "rlogo.h"
-#include "autofunctions.hpp"
+#include "autofunctions.h"
 #include <cmath>
 #include <iomanip>
 #include "sensorcheck.h"
@@ -12,7 +12,6 @@ using namespace vex;
 competition Competition;
 
 Drive chassis(
-
 //ZERO_TRACKER_NO_ODOM, ZERO_TRACKER_ODOM, TANK_ONE_ENCODER, TANK_ONE_ROTATION, TANK_TWO_ENCODER, TANK_TWO_ROTATION, HOLONOMIC_TWO_ENCODER, and HOLONOMIC_TWO_ROTATION
 ZERO_TRACKER_NO_ODOM,
 
@@ -73,9 +72,10 @@ bool auto_started = false;
 int autonState = 0; 
 
 void debug_menu(int selection){
+  // int inertialval;
   bool debug_is_pressed = false;
   while(1){
-    // selection = autonState;
+    float inertialval = Inertial100.heading();
     if(debug_is_pressed == false){
       Brain.Screen.drawImageFromBuffer(vexfield, 50, 0, sizeof(vexfield));
       Brain.Screen.drawImageFromBuffer(logo, 10, 0, sizeof(logo));
@@ -87,7 +87,10 @@ void debug_menu(int selection){
       Brain.Screen.setFont(mono40);
       Brain.Screen.setFillColor(blue);
       Brain.Screen.drawRectangle(310,70,170,210);
-      Brain.Screen.printAt(345,160,"Debug");
+      Brain.Screen.printAt(345,140,"Debug");
+      Brain.Screen.setFont(monoM);
+      Brain.Screen.printAt(345,180,"Inertial:");
+      Brain.Screen.printAt(345,195,"%f",inertialval);
     }
     if(Brain.Screen.pressing()){
       Brain.Screen.clearScreen();
@@ -192,8 +195,9 @@ void autonomous(void) {
     case 0:
       // testing();
       // ramAWP2();
-      noramAWP2();
+      // noramAWP2();
       // Worlds_Skills();
+      Worlds_Skills();
       // sixball();
       // Safesix();
       // RushNoRamAWP();
@@ -241,11 +245,9 @@ void usercontrol(void) {
   checkMotor(RF);
   checkMotor(RM);
   checkMotor(RB);
-  // back_wings.set(true);
   while(1){
     chassis.control_arcade();
-
-    if(Controller1.ButtonY.pressing() && autonState == 5){
+    if(Controller1.ButtonY.pressing() && autonState == 0){
       chassis.drive_max_voltage = 11.2;
       chassis.set_drive_exit_conditions(0.5, 20, 1000);
       chassis.set_turn_exit_conditions(0.4, 20, 900);
@@ -255,20 +257,10 @@ void usercontrol(void) {
       chassis.diff(-45, -80, 1700, 300);
       chassis.set_heading(180);
       chassis.drive_distance(10);
-      chassis.turn_to_angle(70.2);
+      chassis.turn_to_angle(69.2);
       chassis.drive_distance(-4);
       back_wings2.set(true);
     }
-    // if(Controller1.ButtonRight.pressing()){
-    //   // chassis.drive_max_voltage = 11.2;
-    //   // chassis.set_drive_exit_conditions(0.5, 3, 1000);
-    //   // chassis.set_turn_exit_conditions(1.1, 3, 900);
-    //   // intakeMotor.setStopping(hold);
-    //   // chassis.set_heading(45);
-    //   // intakeMotor.spin(forward,100,pct);
-      
-      
-    // }
     wait(20,msec);
   }
 }
