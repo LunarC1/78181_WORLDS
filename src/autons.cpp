@@ -662,8 +662,8 @@ void Worlds_Skills(){
   chassis.turn_to_angle(68.8);
   chassis.drive_distance(-4);
   back_wings2.set(true);
-  kicker.spin(forward,72,pct);
-  wait(21,sec);
+  kicker.spin(forward,70,pct);
+  wait(21.2,sec);
   kicker.stop(coast);
   back_wings2.set(false);
   chassis.set_drive_exit_conditions(0.5, 20, 2200);

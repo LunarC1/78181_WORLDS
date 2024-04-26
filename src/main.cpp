@@ -247,7 +247,7 @@ void usercontrol(void) {
   checkMotor(RB);
   while(1){
     chassis.control_arcade();
-    if(Controller1.ButtonY.pressing() && autonState == 0){
+    if(Controller1.ButtonY.pressing() && autonState == 5){
       chassis.drive_max_voltage = 11.2;
       chassis.set_drive_exit_conditions(0.5, 20, 1000);
       chassis.set_turn_exit_conditions(0.4, 20, 900);
