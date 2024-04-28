@@ -195,9 +195,9 @@ void autonomous(void) {
     case 0:
       // testing();
       // ramAWP2();
-      // noramAWP2();
+      noramAWP2();
       // Worlds_Skills();
-      Worlds_Skills();
+      // Worlds_Skills();
       // sixball();
       // Safesix();
       // RushNoRamAWP();
