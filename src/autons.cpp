@@ -130,6 +130,9 @@ void fiveballtouch(){
   chassis.turn_to_angle(15);
   chassis.drive_distance(5);
   chassis.ram(700,-6,-6);
+  // chassis.drive_distance(5);//EXTRA
+  // chassis.ram(700,-6,-6);
+
   chassis.turn_to_angle(45);
   chassis.drive_distance(7);
   chassis.turn_to_angle(111);
@@ -156,9 +159,12 @@ void fiveballtouch(){
   chassis.DriveL.spin(fwd, 12, volt);
   chassis.DriveR.spin(fwd, 12, volt);
   wait(1000,msec);
-  chassis.set_heading(270);
+  // chassis.set_heading(270);
   front_wings.set(false);
   front_wings2.set(false);
+
+  //comment
+
   chassis.drive_distance(-15);
   chassis.diff(-70,-30,1000,200);
   chassis.turn_to_angle(180);
@@ -166,18 +172,37 @@ void fiveballtouch(){
   back_wings.set(true);
   chassis.drive_distance(-24);
   chassis.ram(5000,-1,-1);
+
+  //elims
+
+  // chassis.drive_distance(-5);
+  // chassis.turn_to_angle(359);
+  // chassis.drive_distance(50);
+  // chassis.turn_to_angle(85);//-5
+  // chassis.diff(-75,-38.5,1400,200);
+  // chassis.turn_to_angle(10);
+  // // chassis.reramB();
+  // chassis.DriveL.spin(fwd, 6, volt);
+  // chassis.DriveR.spin(fwd, 6, volt);
+  // wait(550,msec);
+  // chassis.DriveL.spin(fwd, -9, volt);
+  // chassis.DriveR.spin(fwd, -9, volt);
+  // wait(800,msec);
+  // chassis.DriveL.spin(fwd,0,volt);
+  // chassis.DriveR.spin(fwd,0,volt);
 }
 
 void testing(){
   default_constants();
   chassis.set_heading(0);
+  // chassis.drive_max_voltage = 7;
   // chassis.left_swing_to_angle(90);
   // // chassis.left_swing_to_angle(90);
   // // chassis.left_swing_to_angle(90);
   // intakeMotor.spin(forward,-100,percent);
   // chassis.drive_distance(24);
   // chassis.diff(35,70,2000,300);
-  // chassis.drive_distance(24);
+  chassis.drive_distance(24);
   // chassis.drive_distance(-24);
 
   // chassis.turn_to_angle(90);
@@ -185,10 +210,10 @@ void testing(){
   // chassis.turn_to_angle(270);
 
 
-  chassis.right_swing_to_angle(90);
-  chassis.right_swing_to_angle(180);
-  chassis.right_swing_to_angle(270);
-  chassis.right_swing_to_angle(0);
+  // chassis.right_swing_to_angle(90);
+  // chassis.right_swing_to_angle(180);
+  // chassis.right_swing_to_angle(270);
+  // chassis.right_swing_to_angle(0);
 }
 
 void PID_Test(){
@@ -223,11 +248,13 @@ void noramAWP2(){
   // chassis.drive_max_voltage = 11;
   chassis.set_heading(135);
   intakeMotor.spin(forward,-100,percent);
-  chassis.drive_distance(9);
+  chassis.drive_distance(9);//13
   wait(100,msec);
+  
   // back_wings.set(true);
   back_wings.set(true);
   wait(100,msec);
+  // chassis.drive_distance(4);
   // chassis.drive_distance(-6);
   // chassis.turn_to_angle(275);
   chassis.turn_to_angle(75);
@@ -237,7 +264,7 @@ void noramAWP2(){
   chassis.drive_distance(14);
   chassis.right_swing_to_angle(270);
   // chassis.turn_to_angle(270);
-  chassis.drive_distance(30.5);
+  chassis.drive_distance(28.7);
   // back_wings2.set(true);
   // wait(550,msec);
   // back_wings2.set(false);
@@ -305,6 +332,8 @@ void RushNoRamAWP(){
   front_wings2.set(true);
   chassis.drive_distance(20);
   intakeMotor.spin(fwd,-100,pct);
+  wait(300,msec);
+  chassis.drive_distance(-30);
 
   // // chassis.left_swing_to_angle(180);
   // chassis.DriveL.spin(fwd, -7, volt);
